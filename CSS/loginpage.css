@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Arizonia&family=Hahmlet:wght@200&family=Roboto:ital,wght@1,300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+
+}
+
+
+/* =================  Root Variables ==========
+===================================================== */
+:root {
+
+    --kalo-text: rgb(0, 0, 0);
+    --text-fikka: rgb(130, 130, 130);
+    --seto-background: rgb(255, 255, 255);
+    --creamy-background: #daf4e9;
+    --hariyo-background: linear-gradient(135deg, #00c354, #049c41);
+    --mittho-nilo: #0074d9;
+    --danger-rato: #ff4136;
+    --btn-hariyo: rgb(98, 233, 98);
+    --fikka-kalo: rgb(106, 106, 106);
+}
+
+
+
+
+/* =================  Login form Css==========
+===================================================== */
+
+
+.login-main {
+    width: 100vw;
+    height: 120vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: var(--hariyo-background);
+}
+
+.login-form-container {
+    height: 570px;
+    max-height: 700px;
+    margin-top: 10px;
+    max-width: 700px;
+    width: 100%;
+    background-color: var(--seto-background);
+    padding: 25px 30px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.login-form-container #pharm_title {
+    color: var(--fikka-kalo);
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid black;
+
+
+}
+
+.login-form-container .login-title {
+    color: var(--kalo-text);
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    position: relative;
+}
+
+.login-form-container .login-form-content form .login-user-details {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.login-form-content form .login-user-details .login-input-box {
+    position: relative;
+    margin-bottom: 20px;
+    /* 50%-20 px auto adjust garna help garcha */
+    width: calc(100% - 20px);
+}
+
+.login-user-details .login-input-box input,
+select {
+    height: 45px;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+#login-designation {
+    outline: none;
+    margin-top: 2px;
+    padding: 5px;
+}
+
+.login-button #login-btn {
+    margin: 35px 0;
+    height: 60px;
+    width: 100%;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--mittho-nilo);
+}
+
+.login-button #login-btn:hover {
+    transition: 2s ease;
+    background: linear-gradient(-135deg, #84c0ee, #3c85e4);
+}
+
+@media(max-width: 590px) {
+    .login-form-container {
+        max-width: 100%;
+
+    }
+
+    .login-form-container form .login-user-details .login-input-box input,
+    select {
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    .login-content form .login-user-details {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .login-user-details::-webkit-scrollbar {
+        width: 5px;
+    }
+}
+
+@media(max-width: 470px) {
+    .login-form-container {
+        overflow-y: auto;
+        flex-direction: column;
+    }
+}
+
+
+/* =================  Sidebar Css ==========
+===================================================== */
+
+nav {
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    left: 0;
+    width: 280px;
+    background: var(--secondary-color);
+    overflow-x: scroll;
+    overflow-y: scroll;
+    z-index: 1;
+    transition: 1s;
+    border-radius: 3rem;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+
+}
+
+ul li {
+    list-style: none;
+}
+
+ul li a {
+    position: relative;
+    color: #011a41;
+    font-weight: 500;
+    display: block;
+    padding: 5px 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: .2s ease-out;
+}
+
+ul li:hover a {
+    color: #fff;
+    background: #8000ff;
+}
+
+ul li a i {
+    width: 40px;
+    text-align: center;
+}
+
+
+
+
+.sidebar-top {
+    position: relative;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+#sidebar_title {
+    text-align: center;
+    color: #8000ff;
+    font-size: 40px;
+}
+
+#closesidemenu {
+    position: relative;
+    font-size: 30px;
+    margin-left: calc(100%-10px);
+    width: 20px;
+    height: 30px;
+}
+
+.mode {
+    position: fixed;
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    bottom: 150px;
+}
+
+.logout {
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    bottom: 100px;
+
+}

@@ -1,0 +1,87 @@
+---Working
+1. Entry jasle gareko teko name automatic form ma bascha...no modification can be done
+2.Purchase qty * purchase rate le purchase amount auto calculate garcha so human error reduce hoss
+3.purchase amount-payment made = pending payment pani auto calculate huncha
+4.medicine ko type chai paila nai haleko matra aaucha eg. tablet,capsule,implant etc
+PY#4d(E!asg^rE)E!s!I
+id19414846_root
+akd-EblTW~LRL}2*
+
+
+
+<?php
+            include "./Connection/dbcon.php";
+            session_start();
+            if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
+                header("location: login.php");
+                exit;
+            }
+            $today_date = date("Y/m/d");
+
+            if(isset($_POST['submit'])){
+
+                $med_name=$_POST['med_name'];
+                $sales_rate=$_POST['sales_rate'];
+                $sales_quantity=$_POST['sales_quantity'];
+                $total_sales=$_POST['total_sales'];
+                
+                $entered_by=$_POST['entered_by'];
+                $sale_date=$_POST['entry_date'];
+
+
+                    //Get Stock Record before initialing sales query
+                    $sql1="SELECT * FROM `medicine_record` WHERE `med_name` LIKE '$med_name'";
+                    $result3 = mysqli_query($con, $sql1);
+                    $count=mysqli_num_rows($result3);
+                    if($count>0){
+                        //Get the remaining quantity in stock
+                        while($row=mysqli_fetch_assoc($result3)){
+                            $remaining_quantity=$row['remaining_quantity'];
+                            $purchase_rate = $row['purchase_rate'];
+                        }
+                    
+
+                    $profit_on_sales = $total_sales - ($purchase_rate * $sales_quantity);
+
+                    //Now using sale query
+                    if($sales_quantity<=$remaining_quantity){
+                        $sql2 = "INSERT INTO `sale_record` ( `Medicine_Name`, `total_sale`, `profit_on_sale`, `entered_by`, `date`) VALUES ( '$med_name', '$total_sales', '$profit_on_sales', '$entered_by', '$sale_date');";
+                        $result2 = mysqli_query($con, $sql2);
+                    
+                    
+
+                            ///If Sales Done then reduce remaining quantity from medicine record
+                            if ($result2) {
+                                $sql4 = "SELECT * FROM `medicine_record` WHERE `med_name` = '$med_name'";
+                                $result4 = mysqli_query($con, $sql4);
+
+                                if($result4){
+                                    while ($row = mysqli_fetch_assoc($result4)) {
+                                        $prev_rem_quantity = $row['remaining_quantity'];
+                                        $current_rem_quantity = $prev_rem_quantity - $sales_quantity;
+
+
+                                }
+                                //Update SMedicine table
+                                $sql5 = "UPDATE `medicine_record` SET `remaining_quantity` = '$current_rem_quantity' WHERE `med_name` = '$med_name'";
+                                $result5 = mysqli_query($con, $sql5);
+                                header('location:OP6_manageinventory.php');
+
+
+
+                                }
+                            else{
+                                echo "<script>alert('Invalid Sales entry!!!! Not enougn in stock');</script>";
+                            }
+                        }
+                }
+            }
+                else{
+                    echo "<script>alert('Medicine not Found');</script>";
+                }
+            
+
+            }
+        
+
+?>
