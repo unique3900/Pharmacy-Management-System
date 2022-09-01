@@ -11,6 +11,66 @@ include("sidebar.php");
 // SELECT MONTHNAME(date) as mname, sum(total_sale) as total FROM sale_record GROUP BY MONTH(date);
 
 
+if(isset($_POST['profilepic_change'])){
+
+    $extension_image=pathinfo($_FILES['file']["name"],PATHINFO_EXTENSION);
+    if(!in_array($extension_image,['png','jpeg','jpg','svg']))
+    {
+        echo'
+        <div class="alert alert-danger mt-4 ml-auto w-50 alert-dismissible fade show  float-center" role="alert">
+        <strong>Invalid File Type!</strong> Only PNG,JPEG,JPG and SVG files Allowed
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        ';
+
+    }
+    else{
+    //checking file type if image format ko ho ki haina vanera
+        
+
+
+
+    // Givimg ramdom number suru ma kinaki repeat huna ne sakcha same name so overwrite nahos
+    $filefname=rand(1000,10000) ."-".$_FILES["file"]["name"];
+
+    // Creating temporary file for storage
+    $tname=$_FILES["file"]["tmp_name"];
+
+    // Add uploaded file to local storage i.e profile_uploads
+    $uploadfolder='./uploads';
+    move_uploaded_file($tname,$uploadfolder .'/'. $filefname);
+
+
+
+    if ($_SESSION['designation'] == 'Admin'){
+
+
+    $sql="UPDATE `admin` SET `profile_photo` = '$filefname' WHERE `admin`.`id` = $modalid";
+    $result=mysqli_query($con,$sql);
+
+            if($result){
+                echo "<script>alert('Successfully Changed')</script>";
+            }
+
+    }
+
+    if ($_SESSION['designation'] == 'Pharmacist'){
+       
+        $sql="UPDATE `pharmacist` SET `profile_photo` = '$filefname' WHERE `pharmacist`.`id` = $modalid";
+        $result=mysqli_query($con,$sql);
+
+        
+        if($result){
+            echo "<script>alert('Successfully Changed')</script>";
+        }
+    }
+}
+
+}
+
+
 
 ?>
 
@@ -65,7 +125,7 @@ include("sidebar.php");
 
 
         /* ================================= Login Form CSS  ===========================
-            ========================================================================================= */
+                        ========================================================================================= */
 
         /* Sidebar Ko lagi CSS */
         .containerr #sidebar {
@@ -837,7 +897,7 @@ include("sidebar.php");
 
 
                     <button type="button" class="btn btn-primary my-3" data-target="#profilemodal"
-                        data-toggle="modal">View Profile</button>
+                        data-toggle="modal">Your Profile</button>
 
 
                     <div class="modal" id="profilemodal">
@@ -867,20 +927,28 @@ include("sidebar.php");
                                     $modal_taddreaa=$row_modal['temporary_address'];
                                     $modal_paddress=$row_modal['permanent_address'];
                                     $modal_designation=$row_modal['designation'];
+                                    $modal_profilepic=$row_modal['profile_photo'];
                                     
-                                }
+                                
 
                             ?>
 
 
                                 <div class="modal-body">
-                                    <form action="changeprofilepic.php" method="POST">
+                                    <form action="dashboard.php" method="POST" enctype="multipart/form-data">
 
                                         <div class=" form-group mb-3">
 
-                                            <img src="profile_uploads/my pic.jpg" id="profile-pic" srcset=""
-                                                class="rounded-circle mb-3 mx-auto d-block" alt="Profile_picture" width="500" height="500">
+                                            <img src="<?php echo 'uploads/'. $row_modal['profile_photo'] ; ?>"
+                                                id="profile-pic" srcset="" class="rounded-circle mb-3 mx-auto d-block"
+                                                alt="Profile_picture" width="500" height="500">
+                                            <!-- <p><?php echo  $row_modal['profile_photo'] ; ?></p> -->
                                         </div>
+
+                                        <?php
+                                                 }
+
+                                        ?>
                                         <div class="form-group">
                                             <label for="email">Name:</label>
                                             <input type="text" value="<?php echo $modal_name  ?>" name="u_email"
@@ -888,38 +956,45 @@ include("sidebar.php");
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email:</label>
-                                            <input type="text"    value="<?php echo $modal_email  ?>"   name="u_email" class="form-control" readonly>
+                                            <input type="text" value="<?php echo $modal_email  ?>" name="u_email"
+                                                class="form-control" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Phone:</label>
-                                            <input type="text"   value="<?php echo $modal_phone  ?>"  name="u_phone" class="form-control" readonly>
+                                            <input type="text" value="<?php echo $modal_phone  ?>" name="u_phone"
+                                                class="form-control" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Permanent Address:</label>
-                                            <input type="text"   value="<?php echo $modal_paddress  ?>"  name="u_paddress" class="form-control" readonly>
+                                            <input type="text" value="<?php echo $modal_paddress  ?>" name="u_paddress"
+                                                class="form-control" readonly>
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Temporary Address:</label>
-                                            <input type="text"    value="<?php echo $modal_taddreaa ?>" name="u_taddredd" class="form-control" readonly>
+                                            <input type="text" value="<?php echo $modal_taddreaa ?>" name="u_taddredd"
+                                                class="form-control" readonly>
                                         </div>
                                         <div class="form-group border-bottom-4">
                                             <label for="email">Designation:</label>
-                                            <input type="text"   value="<?php echo $modal_designation  ?>"  name="u_designation" class="form-control" readonly>
+                                            <input type="text" value="<?php echo $modal_designation  ?>"
+                                                name="u_designation" class="form-control" readonly>
                                         </div>
-                              
+
 
                                         <div class="form-group">
                                             <label for="">Change Profile Photo:</label>
-                                            <input type="file" name="u_profilechange" class="form-control">
 
-                                            
+                                            <input type="file" name="file" id="" class="inputelem form-control"> <br>
+
+
                                         </div>
                                         <div class="form-group">
-                                        <button type="submit" name="profilepic_change" class="btn btn-info">Change</button>
+                                            <button type="submit" name="profilepic_change"
+                                                class="btn btn-info">Change</button>
 
-                                            
+
                                         </div>
-                                       
+
 
 
                                     </form>
