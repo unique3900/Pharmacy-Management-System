@@ -2,6 +2,70 @@
 include "./Connection/dbcon.php";
 include("./sidebar.php");
 
+$modalid=$_SESSION['id'];
+
+// SELECT MONTHNAME(date) as mname, sum(total_sale) as total FROM sale_record GROUP BY MONTH(date);
+
+
+if(isset($_POST['profilepic_change'])){
+
+$extension_image=pathinfo($_FILES['file']["name"],PATHINFO_EXTENSION);
+if(!in_array($extension_image,['png','jpeg','jpg','svg']))
+{
+    echo'
+    <div class="alert alert-danger mt-4 ml-auto w-50 alert-dismissible fade show  float-center" role="alert">
+    <strong>Invalid File Type!</strong> Only PNG,JPEG,JPG and SVG files Allowed
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+    ';
+
+}
+else{
+//checking file type if image format ko ho ki haina vanera
+
+
+
+
+// Givimg ramdom number suru ma kinaki repeat huna ne sakcha same name so overwrite nahos
+$filefname=rand(1000,10000) ."-".$_FILES["file"]["name"];
+
+// Creating temporary file for storage
+$tname=$_FILES["file"]["tmp_name"];
+
+// Add uploaded file to local storage i.e profile_uploads
+$uploadfolder='./uploads';
+move_uploaded_file($tname,$uploadfolder .'/'. $filefname);
+
+
+
+if ($_SESSION['designation'] == 'Admin'){
+
+
+$sql="UPDATE `admin` SET `profile_photo` = '$filefname' WHERE `admin`.`id` = $modalid";
+$result=mysqli_query($con,$sql);
+
+        if($result){
+            echo "<script>alert('Successfully Changed')</script>";
+        }
+
+}
+
+if ($_SESSION['designation'] == 'Pharmacist'){
+
+    $sql="UPDATE `pharmacist` SET `profile_photo` = '$filefname' WHERE `pharmacist`.`id` = $modalid";
+    $result=mysqli_query($con,$sql);
+
+
+    if($result){
+        echo "<script>alert('Successfully Changed')</script>";
+    }
+}
+}
+
+}
+
 
 ?>
 
@@ -13,6 +77,9 @@ include("./sidebar.php");
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../CSS/all.min.css">
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="CSS/jquery.dataTables.min.css">
      <!-- <link rel="stylesheet" href="../CSS/style.css"> -->
     <script src="../JS/Script.js"></script>
     <link rel="stylesheet" href="CSS/jquery.dataTables.min.css">
@@ -54,7 +121,7 @@ include("./sidebar.php");
             ========================================================================================= */
 
             /* Sidebar Ko lagi CSS */
-            .container #sidebar {
+            .containers #sidebar {
                 align-items: center;
                 position: fixed;
                 top: 0;
@@ -158,7 +225,7 @@ include("./sidebar.php");
 
             }
 
-            .container {
+            .containers {
                 display: flex;
             }
 
@@ -200,8 +267,8 @@ include("./sidebar.php");
             .main {
                 position: relative;
                 padding: 20px;
-                width: calc(100% - 280px);
-                left: 280px;
+                width: calc(100% - 260px);
+                left: 260px;
                 transition: .3s ease;
             }
 
@@ -439,6 +506,17 @@ include("./sidebar.php");
                         margin-right: 2px;
 
                     }
+                    #v_btn {
+                        width: 90px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
 
                     #del_btn {
                         width: 90px;
@@ -504,7 +582,7 @@ include("./sidebar.php");
 </head>
 
 <body>
-    <div class="container">
+    <div class="containers">
 
 
 
@@ -641,20 +719,11 @@ include("./sidebar.php");
                                 </a>
                             </li>
                             ';
-                            echo '
-
-                                        <li>
-                                            <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id'] . '" class="pwd_change">
-                                                <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                                <img src="icons/password.svg" class="fas" alt="">
-                                                <span class="nav-item">Change Password</span>
-                                            </a>
-                                        </li>
-                                        ';
+                           
 
                                         if ($_SESSION['designation'] == 'Pharmacist') {
                                             echo '
-            
+
                                                     <!-- Dark Mode  -->
                                                     <li>
                                                         <a href="OP20_Leave_Req.php" class="mode" id="icon">
@@ -665,10 +734,10 @@ include("./sidebar.php");
                                                     </li>
                                                     ';
                                                     }
-            
+
                                                     if ($_SESSION['designation'] == 'Admin') {
                                                         echo '
-                                        
+
                                                                 <!-- Dark Mode  -->
                                                                 <li>
                                                                     <a href="OP21_manageleave.php" class="mode" id="icon">
@@ -691,7 +760,7 @@ include("./sidebar.php");
                             </li>
                             ';
 
-                            
+
 
 
 
@@ -713,6 +782,109 @@ include("./sidebar.php");
                         </div>
             <div class="main-top">
                 <h1>Employee Section</h1>
+
+                                    <div class="modal" id="profilemodal">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="text-primary">Your Profile</h3>
+                                                    <button type="button" class="close " data-dismiss="modal">&times;</button>
+
+                                                </div>
+
+                                                <!-- Importing Details for modal informat -->
+                                                <?php
+                                                if ($_SESSION['designation'] == 'Admin'){
+                                                $sql_modal="SELECT * FROM `admin` WHERE `id` = $modalid";
+                                                $result_modal=mysqli_query($con,$sql_modal);
+                                                }
+                                                if ($_SESSION['designation'] == 'Pharmacist'){
+                                                    $sql_modal="SELECT * FROM `pharmacist` WHERE `id` = $modalid";
+                                                    $result_modal=mysqli_query($con,$sql_modal);
+                                                    }
+
+                                                while($row_modal=mysqli_fetch_assoc($result_modal)){
+                                                    $modal_name=$row_modal['name'];
+                                                    $modal_email=$row_modal['email'];
+                                                    $modal_phone=$row_modal['phone'];
+                                                    $modal_taddreaa=$row_modal['temporary_address'];
+                                                    $modal_paddress=$row_modal['permanent_address'];
+                                                    $modal_designation=$row_modal['designation'];
+                                                    $modal_profilepic=$row_modal['profile_photo'];
+
+
+
+                                            ?>
+
+
+                                                <div class="modal-body">
+                                                    <form action="dashboard.php" method="POST" enctype="multipart/form-data">
+
+                                                        <div class=" form-group mb-3">
+
+                                                            <img src="<?php echo 'uploads/'. $row_modal['profile_photo'] ; ?>"
+                                                                id="profile-pic" srcset="" class="rounded-circle mb-3 mx-auto d-block"
+                                                                alt="Profile_picture" width="500" height="500">
+                                                            <!-- <p><?php echo  $row_modal['profile_photo'] ; ?></p> -->
+                                                        </div>
+
+                                                        <?php
+                                                                 }
+
+                                                        ?>
+                                                        <div class="form-group">
+                                                            <label for="email">Name:</label>
+                                                            <input type="text" value="<?php echo $modal_name  ?>" name="u_email"
+                                                                class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="email">Email:</label>
+                                                            <input type="text" value="<?php echo $modal_email  ?>" name="u_email"
+                                                                class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="email">Phone:</label>
+                                                            <input type="text" value="<?php echo $modal_phone  ?>" name="u_phone"
+                                                                class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="email">Permanent Address:</label>
+                                                            <input type="text" value="<?php echo $modal_paddress  ?>" name="u_paddress"
+                                                                class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="email">Temporary Address:</label>
+                                                            <input type="text" value="<?php echo $modal_taddreaa ?>" name="u_taddredd"
+                                                                class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group border-bottom-4">
+                                                            <label for="email">Designation:</label>
+                                                            <input type="text" value="<?php echo $modal_designation  ?>"
+                                                                name="u_designation" class="form-control" readonly>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label for="">Change Profile Photo:</label>
+
+                                                            <input type="file" name="file" id="" class="inputelem form-control"> <br>
+
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" name="profilepic_change"
+                                                                class="btn btn-info">Change</button>
+
+
+                                                        </div>
+
+
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
             </div>
 
             <a href="OP2_adduser.php"><button id="Add_btn">Add User</button></a>
@@ -730,6 +902,7 @@ include("./sidebar.php");
                         <th>Permanent Address</th>
                         <th>Temporary Address</th>
                         <th>Designation</th>
+                      
                         <th>Operations</th>
                     </thead>
                     <tbody>
@@ -783,6 +956,7 @@ include("./sidebar.php");
                             <td data-label="Permanent_Address">' . $permanent_address . '</td>
                             <td data-label="Temporary_Address">' . $temporary_address . '</td>
                             <td data-label="designation">' . $designation . '</td>
+                           
 
                             <td data-label="Operations"><a href="OP3_updateemployee.php?updatedesignation=' . $designation . '&updateid=' . $id . '"><button id="up_btn">Update</button></a>
                              <a href="OP4_deleteemployee.php?deleteid=' . $id . '&deletedesignation=' . $designation . '"><button id="del_btn">Delete</button></a></td>
@@ -843,6 +1017,7 @@ include("./sidebar.php");
                             <td data-label="Permanent_Address">' . $permanent_address . '</td>
                             <td data-label="Temporary_Address">' . $temporary_address . '</td>
                             <td data-label="designation">' . $designation . '</td>
+                          
 
                             <td data-label="Operations">
                                 <a href="OP3_updateemployee.php?updatedesignation=' . $designation . '&updateid=' . $id . '"><button id="up_btn">Update</button></a>
@@ -865,6 +1040,9 @@ include("./sidebar.php");
 
 
         </section>
+
+
+
 
     </div>
 

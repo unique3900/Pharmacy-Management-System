@@ -28,7 +28,7 @@ if(isset($_POST['profilepic_change'])){
     }
     else{
     //checking file type if image format ko ho ki haina vanera
-        
+
 
 
 
@@ -57,11 +57,11 @@ if(isset($_POST['profilepic_change'])){
     }
 
     if ($_SESSION['designation'] == 'Pharmacist'){
-       
+
         $sql="UPDATE `pharmacist` SET `profile_photo` = '$filefname' WHERE `pharmacist`.`id` = $modalid";
         $result=mysqli_query($con,$sql);
 
-        
+
         if($result){
             echo "<script>alert('Successfully Changed')</script>";
         }
@@ -692,13 +692,13 @@ if(isset($_POST['profilepic_change'])){
                             echo '
 
                             <li>
-                           
+
                             <a href="#" class="">
 
                                     <span class="nav-item"> Hi, ' . $_SESSION['name'] . '</span>
-                                  
+
                                 </a>
-                               
+
                             </li>';
 
 
@@ -813,20 +813,11 @@ if(isset($_POST['profilepic_change'])){
                                 </a>
                             </li>
                             ';
-                            echo '
-
-                                        <li>
-                                            <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id']  . '" class="pwd_change">
-                                                <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                                <img src="icons/password.svg" class="fas" alt="">
-                                                <span class="nav-item">Change Password</span>
-                                            </a>
-                                        </li>
-                                        ';
+                           
 
                                         if ($_SESSION['designation'] == 'Pharmacist') {
                                             echo '
-            
+
                                                     <!-- Dark Mode  -->
                                                     <li>
                                                         <a href="OP20_Leave_Req.php" class="mode" id="icon">
@@ -837,10 +828,10 @@ if(isset($_POST['profilepic_change'])){
                                                     </li>
                                                     ';
                                                     }
-            
+
                                                     if ($_SESSION['designation'] == 'Admin') {
                                                         echo '
-                                        
+
                                                                 <!-- Dark Mode  -->
                                                                 <li>
                                                                     <a href="OP21_manageleave.php" class="mode" id="icon">
@@ -863,7 +854,7 @@ if(isset($_POST['profilepic_change'])){
                             </li>
                             ';
 
-                            
+
 
 
 
@@ -928,8 +919,8 @@ if(isset($_POST['profilepic_change'])){
                                     $modal_paddress=$row_modal['permanent_address'];
                                     $modal_designation=$row_modal['designation'];
                                     $modal_profilepic=$row_modal['profile_photo'];
-                                    
-                                
+
+
 
                             ?>
 
@@ -990,7 +981,12 @@ if(isset($_POST['profilepic_change'])){
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" name="profilepic_change"
-                                                class="btn btn-info">Change</button>
+                                                class="btn btn-info">Change Photo</button>
+                                                <?php
+                                                echo '
+                                               <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id']  . '" class="btn btn-danger">Change Password</a> 
+                                                ';
+                                                ?>
 
 
                                         </div>
@@ -1018,7 +1014,7 @@ if(isset($_POST['profilepic_change'])){
                                             $sql = "SELECT id FROM `medicine_record` ORDER BY id";
                                             $result = mysqli_query($con,$sql);
                                             $row = mysqli_num_rows($result);
-                                            echo $row ." Types";        
+                                            echo $row ." Types";
                                         ?>
                                         </span></td>
                                 </tr>
@@ -1031,7 +1027,7 @@ if(isset($_POST['profilepic_change'])){
                                             $sql = "SELECT * FROM medicine_record WHERE expiry_date<CURDATE()";
                                             $result = mysqli_query($con,$sql);
                                             $row = mysqli_num_rows($result);
-                                            echo $row  ." Types"; 
+                                            echo $row  ." Types";
                                          ?>
                                         </span></td>
 
@@ -1043,7 +1039,7 @@ if(isset($_POST['profilepic_change'])){
                                                 $sqll = "SELECT * FROM medicine_record WHERE remaining_quantity=0";
                                                 $result = mysqli_query($con,$sqll);
                                                 $row = mysqli_num_rows($result);
-                                                    echo $row ." Types";  
+                                                    echo $row ." Types";
                                          ?>
                                         </span></td>
 
@@ -1116,7 +1112,7 @@ if(isset($_POST['profilepic_change'])){
                                             $sql = "SELECT * FROM `supp_record` ";
                                             $result = mysqli_query($con,$sql);
                                             $row = mysqli_num_rows($result);
-                                            echo $row ." People" ;        
+                                            echo $row ." People" ;
                                     ?>
                                         </span></td>
 

@@ -599,16 +599,7 @@
                                 </a>
                             </li>
                             ';
-                            echo '
-
-                                        <li>
-                                            <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id'] . '" class="pwd_change">
-                                                <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                                <img src="icons/password.svg" class="fas" alt="">
-                                                <span class="nav-item">Change Password</span>
-                                            </a>
-                                        </li>
-                                        ';
+                           
 
                                        
                                         if ($_SESSION['designation'] == 'Pharmacist') {
@@ -706,9 +697,21 @@
                                               //databaseko data haru fetch garna//
 
                                               while( $row=mysqli_fetch_assoc($result)){
+
+
+                                                $comp_name_id=$row['com_name'];
+                                                $sql2="SELECT `name`   FROM `company_record` where `id`=$comp_name_id";
+                                                $result2 = mysqli_query($con, $sql2);
+
+                                                while($row2=mysqli_fetch_array($result2)){
+                                                    $com_name= $row2['name'];
+                                                }
+                    
+                                                
+
                                                 $id = $row['supp_id'];
                                                 $supp_name = $row['supp_name'];
-                                                $com_name = $row['com_name'];
+                                                
                                                 $dop= $row['doe'];
                                                 $sphone = $row['sphone'];
                                                 $cphone = $row['cphone'];

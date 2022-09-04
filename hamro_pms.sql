@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 13, 2022 at 04:24 PM
+-- Generation Time: Sep 04, 2022 at 04:19 PM
 -- Server version: 5.7.33
 -- PHP Version: 7.4.19
 
@@ -37,16 +37,16 @@ CREATE TABLE `admin` (
   `permanent_address` varchar(255) NOT NULL,
   `temporary_address` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL
+  `gender` varchar(255) NOT NULL,
+  `profile_photo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`) VALUES
-(5, 'Samyok limb', 'limbu1@gmail.com', '9803377892', '2022-08-11', 'Admin', 'Thechambu Taplejung', 'Sallaghari Bhaktapur', '$2y$10$XcHE5ALGzypYIfKulb4/Ze0ZcnIprShVwr/S6BDT1B2bmv5UGTzpC', 'male'),
-(6, 'Parashar Neupane', 'gorkha3900@gmail.com', '9803377892', '2002-02-05', 'Admin', 'Neupane Gaun Duwakot', '', '$2y$10$iemA7bgLaqgD1.pv6wOJiuDWCROL.qjuQ.tj172g6nacfHFvK5WFy', 'male');
+INSERT INTO `admin` (`id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`, `profile_photo`) VALUES
+(5, 'Samyok limb', 'limbu1@gmail.com', '9803377892', '2022-08-11', 'Admin', 'Thechambu Taplejung', 'Sallaghari Bhaktapur', '$2y$10$3ljWmPB0RdlffQv6ntobR.c3jWCxPJjx.NWMPrqViMMTXcdlECj.a', 'male', '8875-baburao.jpg');
 
 -- --------------------------------------------------------
 
@@ -64,10 +64,8 @@ CREATE TABLE `company_record` (
 --
 
 INSERT INTO `company_record` (`id`, `name`) VALUES
-(1, ''),
-(2, 'Bajra Suppliers'),
-(3, 'Subodh Medicals Pvt Ltd'),
-(4, 'Bhisma Suppliers co.');
+(5, 'Bhisma Suppliers co.'),
+(6, 'Subodh Medicals Pvt Ltd');
 
 -- --------------------------------------------------------
 
@@ -101,7 +99,8 @@ INSERT INTO `leaverequests` (`u_id`, `leave_id`, `Name`, `Reason`, `submitted_da
 (13, 7, 'Krishna Kami', 'I have my personal issue going on.please Grant me a day of leave', '2022/08/13', '2022-08-13', '2022-08-15', 1),
 (14, 4, 'Krishna Kami', 'Teej Shopping', '2022/08/13', '2022-08-20', '2022-08-21', 2),
 (15, 3, 'Khaldo pande', 'Daar Karyakram', '2022/08/13', '2022-08-13', '2022-08-15', 1),
-(16, 5, 'Chameli Koirala', 'Corona Booster Dose Booking', '2022/08/13', '2022-08-20', '2022-08-21', 1);
+(16, 5, 'Chameli Koirala', 'Corona Booster Dose Booking', '2022/08/13', '2022-08-20', '2022-08-21', 1),
+(17, 1, 'Komal Thapa', 'Family Vacation', '2022/09/04', '2022-09-07', '2022-09-22', 2);
 
 -- --------------------------------------------------------
 
@@ -112,7 +111,7 @@ INSERT INTO `leaverequests` (`u_id`, `leave_id`, `Name`, `Reason`, `submitted_da
 CREATE TABLE `medicine_record` (
   `id` int(11) NOT NULL,
   `med_name` varchar(255) NOT NULL,
-  `med_type` varchar(255) NOT NULL,
+  `med_type` int(255) NOT NULL,
   `date_of_purchase` varchar(255) NOT NULL,
   `expiry_date` varchar(255) NOT NULL,
   `total_purchase_amount` varchar(255) NOT NULL,
@@ -130,19 +129,8 @@ CREATE TABLE `medicine_record` (
 --
 
 INSERT INTO `medicine_record` (`id`, `med_name`, `med_type`, `date_of_purchase`, `expiry_date`, `total_purchase_amount`, `total_purchase_quantity`, `purchase_rate`, `total_payment`, `pending_payment`, `entered_by`, `seller`, `remaining_quantity`) VALUES
-(11, 'Hansaplast(A350)', 'Implants', '2022-08-03', '2022-09-03', '700', '100', '7', '700', '0', 'Ramesh Koirala', 'Ram Kumar Thami', 0),
-(13, 'Protogel(P009)', 'Tablet', '2022-08-04', '2022-08-06', '1000', '100', '010', '0900', '100', 'Champa Thapa', 'Ram Kumar Thami', 0),
-(15, 'Beta2(B20)', 'Liquid', '2022-08-04', '2022-08-12', '1000', '10', '0100', '1000', '0', 'Champa Thapa', 'Ram', 0),
-(16, 'Meta(P009)', 'Capsules', '2022-08-05', '2022-08-26', '1000', '100', '10', '600', '400', 'Komal Thapa', '', 0),
-(18, 'Chwyanprash(Z001)', 'Suppliments', '2022-08-09', '2022-09-10', '2000', '10', '200', '2000', '0', 'Komal Thapa', '', 10),
-(20, 'Crutch(Z001)', 'Body', '2022-08-09', '2030-11-21', '10000', '5', '2000', '10000', '0', 'Komal Thapa', '', 0),
-(23, 'Horlicks(Z001)', 'Suppliments', '2022-08-10', '2022-08-20', '4000', '10', '400', '3000', '1000', 'Komal Thapa', 'Ram', 20),
-(24, 'Sinex(P007)', 'Tablet', '2022-08-10', '2022-08-02', '400', '100', '4', '400', '0', 'Komal Thapa', 'Ram', 99),
-(25, 'Protogel(B20)', 'Tablet', '2022-08-10', '2022-08-08', '20', '10', '2', '20', '0', 'Komal Thapa', 'Ram', 10),
-(26, 'Protogel(P009)', 'Tablet', '2022-08-10', '2022-08-08', '1', '01', '01', '01', '0', 'Komal Thapa', 'Ram', 1),
-(28, 'Horlicks(Z001)', 'Liquid', '2022-08-10', '2022-08-12', '121', '011', '011', '0121', '0', 'Chameli Koirala', 'Ram', 20),
-(31, 'Zandu Bam(Z001)', 'Gel', '2022-08-20', '2022-08-27', '150', '10', '15', '100', '50', 'Komal Thapa', 'Ram', 10),
-(32, 'VicksInhaler(P007)', 'Inhalers', '2022-08-13', '2022-08-31', '1000', '0100', '10', '1000', '0', 'Komal Thapa', 'Ram', 0);
+(1, 'Protogel(P009)', 4, '2022-09-04', '2022-09-24', '1000', '100', '10', '990', '10', 'Komal Thapa', 'Ram', 0),
+(3, 'WheelChair(W209)', 5, '2022-09-04', '2026-08-04', '25000', '5', '5000', '20000', '5000', 'Komal Thapa', 'Ram', 5);
 
 -- --------------------------------------------------------
 
@@ -160,20 +148,11 @@ CREATE TABLE `medicine_type` (
 --
 
 INSERT INTO `medicine_type` (`id`, `type`) VALUES
-(1, 'Liquid'),
-(2, 'Tablet'),
-(3, 'Capsules'),
-(4, 'Drops'),
-(5, 'Inhalers'),
-(6, 'Injections'),
-(7, 'Implants or patches'),
-(9, 'Soluble'),
-(10, 'Suppliments'),
-(11, 'Injection'),
-(12, 'Churan'),
-(13, 'Gel'),
-(14, 'Body Support'),
-(15, 'Hair Care');
+(1, 'Injection'),
+(2, 'Hair Care'),
+(3, 'Suppliments'),
+(4, 'Tablets'),
+(5, 'Body Support');
 
 -- --------------------------------------------------------
 
@@ -191,20 +170,16 @@ CREATE TABLE `pharmacist` (
   `permanent_address` varchar(255) NOT NULL,
   `temporary_address` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL
+  `gender` varchar(255) NOT NULL,
+  `profile_photo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pharmacist`
 --
 
-INSERT INTO `pharmacist` (`id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`) VALUES
-(1, 'Komal Thapa', 'komalt@gmail.com', '9803705640', '2022-08-02', 'Pharmacist', 'Bombay', '', '$2y$10$sG3deTnWRrzW9ZEf1/u9xOiqL7IHehv20JjBVEeIQhN.zvPQiMsS2', 'female'),
-(2, 'Kishna Khadka', 'kdkkrishna@gmail.com', '9803377892', '2022-08-05', 'Pharmacist', 'Thechambu Taplejung', 'Sallaghari Bhaktapur', '$2y$10$b6lVQOWaYBUPV1ln6dIp.ubMgZJLB.AKx4F9NmcQwWRYpWRFeF6ia', 'male'),
-(3, 'Khaldo pande', 'khaldo1@gmail.com', '9803377892', '2022-08-03', 'Pharmacist', 'Kamalbinayak', '', '$2y$10$intucBLe1NxbR6skylp76ud7z2QZ/YEFDeN/ABcUy3868iz8x5eA6', 'others'),
-(4, 'Krishna Kami', 'kami12@gmail.com', '9803377892', '2022-08-09', 'Pharmacist', 'Kamalbinayak', 'Sallaghari Bhaktapur', '$2y$10$D.nb4Q5zb7Z/ZjThimSGaOcnk1NxMRDeec3HUBFX5KVcmM9gLdc7i', 'male'),
-(5, 'Chameli Koirala', 'chamelio12@yahoo.co', '9803377892', '2022-08-10', 'Pharmacist', 'Neupane Gaun Duwakot', 'Koteshwor Kathmandu', '$2y$10$FWX/BirRChjE.pmDiaCaQ.WJslwqrDDtV1d6.PXBZAf3/GRD2AEUa', 'female'),
-(6, 'Hari Sharan Basnet', 'basnethari69@hotmail.com', '9861488688', '2004-06-15', 'Pharmacist', 'barpak Gorkha', '', '$2y$10$ktDJuH7fiwxR6urJZ2rQWOsrgPD06j1.jRrDxs5dRZnbiK3amu0yW', 'male');
+INSERT INTO `pharmacist` (`id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`, `profile_photo`) VALUES
+(1, 'Komal Thapa', 'komalt@gmail.com', '9803705640', '2022-08-02', 'Pharmacist', 'Bombay', '', '$2y$10$sG3deTnWRrzW9ZEf1/u9xOiqL7IHehv20JjBVEeIQhN.zvPQiMsS2', 'female', '4951-komal.jpg');
 
 -- --------------------------------------------------------
 
@@ -250,7 +225,8 @@ INSERT INTO `sale_record` (`id`, `Medicine_Name`, `total_sale`, `profit_on_sale`
 (22, 'Sinex(P007)', 111, 107, 'Komal Thapa', '2022-08-13'),
 (23, 'VicksInhaler(P007)', 400, 300, 'Komal Thapa', '2022-08-13'),
 (24, 'VicksInhaler(P007)', 80, 60, 'Komal Thapa', '2022-08-13'),
-(25, 'VicksInhaler(P007)', 3872, 2992, 'Komal Thapa', '2022-08-13');
+(25, 'VicksInhaler(P007)', 3872, 2992, 'Komal Thapa', '2022-08-13'),
+(26, 'Protogel(P009)', 6000, 2000, 'Komal Thapa', '2022-09-04');
 
 -- --------------------------------------------------------
 
@@ -261,7 +237,7 @@ INSERT INTO `sale_record` (`id`, `Medicine_Name`, `total_sale`, `profit_on_sale`
 CREATE TABLE `supp_record` (
   `supp_id` int(11) NOT NULL,
   `supp_name` varchar(255) NOT NULL,
-  `com_name` varchar(255) NOT NULL,
+  `com_name` int(255) NOT NULL,
   `doe` varchar(255) NOT NULL,
   `sphone` varchar(255) NOT NULL,
   `cphone` varchar(255) NOT NULL,
@@ -275,11 +251,8 @@ CREATE TABLE `supp_record` (
 --
 
 INSERT INTO `supp_record` (`supp_id`, `supp_name`, `com_name`, `doe`, `sphone`, `cphone`, `email`, `paddress`, `taddress`) VALUES
-(2, 'Ram Kumar Thami', '', '2022-08-23', '9803705640', '9809008765', 'himasa1291@altpano.com', 'Baneshwor Ktm', 'Madhyapur ThimiBode'),
-(4, 'Hariram Dahal', 'Bhisma', '2022-08-11', '9843311118', '0156907892', 'dahalhari@subodh.co.np', 'Duwakot Bhaktapur', 'Sallaghari '),
-(5, 'Bishnu Tuladhar', 'Bhisma', '2022-08-04', '9832456781', '0900876511', 'bishnut@gmail.com', 'Kupondol', ''),
-(6, 'Uddhav Manandhar', 'Bhisma', '2022-08-13', '9808856765', '9809008256', 'uddhavmdr89@yahoo.com', 'Kupondol', ''),
-(7, 'Utsav Kami', 'Subodh', '2022-08-13', '9803705640', '9809008256', 'utsab@hotbail.com', 'Kupondol', '');
+(3, 'Ram Kumar Thami', 5, '2022-09-04', '9809099868', '0156907892', 'ram13@abc.com', 'Baneshwor Ktm', 'Madhyapur Thimi'),
+(4, 'Bishnu Tuladhar', 6, '2022-09-04', '9832456781', '9809008256', 'bishnut@gmail.com', 'Kupondol', '');
 
 --
 -- Indexes for dumped tables
@@ -307,7 +280,8 @@ ALTER TABLE `leaverequests`
 -- Indexes for table `medicine_record`
 --
 ALTER TABLE `medicine_record`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `category_type_fk` (`med_type`);
 
 --
 -- Indexes for table `medicine_type`
@@ -331,7 +305,8 @@ ALTER TABLE `sale_record`
 -- Indexes for table `supp_record`
 --
 ALTER TABLE `supp_record`
-  ADD PRIMARY KEY (`supp_id`);
+  ADD PRIMARY KEY (`supp_id`),
+  ADD KEY `company_name_fk` (`com_name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -341,49 +316,65 @@ ALTER TABLE `supp_record`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `company_record`
 --
 ALTER TABLE `company_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `leaverequests`
 --
 ALTER TABLE `leaverequests`
-  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `u_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `medicine_record`
 --
 ALTER TABLE `medicine_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `medicine_type`
 --
 ALTER TABLE `medicine_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `pharmacist`
 --
 ALTER TABLE `pharmacist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sale_record`
 --
 ALTER TABLE `sale_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `supp_record`
 --
 ALTER TABLE `supp_record`
-  MODIFY `supp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `supp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `medicine_record`
+--
+ALTER TABLE `medicine_record`
+  ADD CONSTRAINT `category_type_fk` FOREIGN KEY (`med_type`) REFERENCES `medicine_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supp_record`
+--
+ALTER TABLE `supp_record`
+  ADD CONSTRAINT `company_name_fk` FOREIGN KEY (`com_name`) REFERENCES `company_record` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

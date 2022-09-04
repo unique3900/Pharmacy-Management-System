@@ -40,6 +40,8 @@
         if($expiry_date>$today_date){
                 if($pending_payment>=0){
 
+                            
+
                         $sql = "INSERT INTO `medicine_record` ( `med_name`, `med_type`, `date_of_purchase`, `expiry_date`, `total_purchase_amount`, `total_purchase_quantity`, `purchase_rate`, `total_payment`, `pending_payment`, `entered_by`, `seller`, `remaining_quantity`) VALUES ( '$med_name_nospace','$med_type', '$date_of_purchase', '$expiry_date', '$purchase_amount', '$purchase_quantity', '$purchase_rate', '$total_payment', '$pending_payment', '$entered_by', '$seller', '$current_remaining_quantity')";
                         $result = mysqli_query($con, $sql);
                         if (!$result) {
@@ -294,7 +296,8 @@
                                 $sqli="SELECT * FROM medicine_type";
                                 $result1=mysqli_query($con,$sqli);
                                 while($row=mysqli_fetch_array($result1)){
-                                    echo '<option value='.$row['type'].'>'.$row['type'].'</option>';
+                                    echo '<option value='.$row['id'].'>'.$row['type'].'</option>';
+                                  
                                 }
 
 

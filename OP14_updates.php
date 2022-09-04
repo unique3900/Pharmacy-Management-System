@@ -270,7 +270,7 @@
             $sqli="SELECT * FROM company_record";
             $result1=mysqli_query($con,$sqli);
             while($row=mysqli_fetch_array($result1)){
-                echo '<option value='.$row['name'].'>'.$row['name'].'</option>';
+                echo '<option value='.$row['id'].'>'.$row['name'].'</option>';
             }
               ?>
         </select>

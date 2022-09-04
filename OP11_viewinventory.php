@@ -527,16 +527,7 @@
                                 </a>
                             </li>
                             ';
-                            echo '
-
-                                        <li>
-                                            <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id'] . '" class="pwd_change">
-                                                <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                                <img src="icons/password.svg" class="fas" alt="">
-                                                <span class="nav-item">Change Password</span>
-                                            </a>
-                                        </li>
-                                        ';
+              
 
           
                                         if ($_SESSION['designation'] == 'Pharmacist') {
@@ -631,9 +622,18 @@
                         $counte= 0;
                         while ($row = mysqli_fetch_assoc($result)) {
 
+                            $med_type_id=$row['med_type'];
+                            $sql2="SELECT `type`   FROM `medicine_type` where `id`=$med_type_id";
+                            $result2 = mysqli_query($con, $sql2);
+
+                            while($row2=mysqli_fetch_assoc($result2)){
+                                $med_type= $row2['type'];
+                            }
+
+
                             $id = $row['id'];
                             $med_name = $row['med_name'];
-                            $med_type = $row['med_type'];
+                           
                             $date_of_purchase = $row['date_of_purchase'];
                             $expiry_date = $row['expiry_date'];
                             $purchase_quantity = $row['total_purchase_quantity'];

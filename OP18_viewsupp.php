@@ -532,16 +532,7 @@ include "./Connection/dbcon.php";
                          </li>
                          ';
                          
-                         echo '
-
-                         <li>
-                             <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id'] . '" class="pwd_change">
-                                 <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                 <img src="icons/password.svg" class="fas" alt="">
-                                 <span class="nav-item">Change Password</span>
-                             </a>
-                         </li>
-                         ';
+     
   
                          echo '
 

@@ -443,6 +443,18 @@ include("./sidebar.php");
                         margin-right: 2px;
 
                     }
+                    #v_btn {
+                        width: 90px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
+
 
                     #del_btn {
                         width: 90px;
@@ -651,20 +663,11 @@ include("./sidebar.php");
                                 </a>
                             </li>
                             ';
-                            echo '
-
-                                        <li>
-                                            <a href="OP19_change_Password.php?updatedesignation=' . $_SESSION['designation'] . '&updateid=' . $_SESSION['id'] . '" class="pwd_change">
-                                                <!-- <i class="fas fa-solid fa-right-from-bracket"></i> -->
-                                                <img src="icons/password.svg" class="fas" alt="">
-                                                <span class="nav-item">Change Password</span>
-                                            </a>
-                                        </li>
-                                        ';
+                           
 
                                         if ($_SESSION['designation'] == 'Pharmacist') {
                                             echo '
-            
+
                                                     <!-- Dark Mode  -->
                                                     <li>
                                                         <a href="OP20_Leave_Req.php" class="mode" id="icon">
@@ -675,10 +678,10 @@ include("./sidebar.php");
                                                     </li>
                                                     ';
                                                     }
-            
+
                                                     if ($_SESSION['designation'] == 'Admin') {
                                                         echo '
-                                        
+
                                                                 <!-- Dark Mode  -->
                                                                 <li>
                                                                     <a href="OP21_manageleave.php" class="mode" id="icon">
@@ -700,7 +703,7 @@ include("./sidebar.php");
                             </li>
                             ';
 
-                            
+
 
 
 
@@ -718,6 +721,8 @@ include("./sidebar.php");
                         </div>
             <div class="main-top">
                 <h1>Display Section</h1>
+
+         
             </div>
 
 
@@ -734,6 +739,7 @@ include("./sidebar.php");
                         <th>Phone Number</th>
                         <th>Permanent Address</th>
                         <th>Temporary Address</th>
+                       
                         <th>Designation</th>
 
                     </thead>
@@ -784,6 +790,7 @@ include("./sidebar.php");
                             <td data-label="Permanent_Address">' . $permanent_address . '</td>
                             <td data-label="Temporary_Address">' . $temporary_address . '</td>
                             <td data-label="designation">' . $designation . '</td>
+                     
 
 
                         </tr>';
@@ -839,6 +846,7 @@ include("./sidebar.php");
                             <td data-label="Permanent_Address">' . $permanent_address . '</td>
                             <td data-label="Temporary_Address">' . $temporary_address . '</td>
                             <td data-label="designation">' . $designation . '</td>
+                            
 
 
                         </tr>';

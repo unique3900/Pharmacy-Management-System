@@ -302,7 +302,7 @@
                                 $sqli = "SELECT * FROM medicine_type";
                                 $result1 = mysqli_query($con, $sqli);
                                 while ($row = mysqli_fetch_array($result1)) {
-                                    echo '<option value=' . $row['type'] . '>' . $row['type'] . '</option>';
+                                    echo '<option value=' . $row['id'] . '>' . $row['type'] . '</option>';
                                 }
 
 
