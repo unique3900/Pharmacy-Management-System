@@ -13,6 +13,7 @@
 
 
         $med_name =$_POST['med_name'];
+        $med_id =$_POST['med_id'];
         $batch_number=$_POST['Batch_Number'];
         $med_type = $_POST['med_type'];
         $date_of_purchase = $_POST['purchase_date'];
@@ -25,7 +26,7 @@
         $entered_by = $_POST['entered_by'];
         $seller = $_POST['seller'];
 
-        
+
         $batch_number_nospace=trim($batch_number);
 
 
@@ -34,30 +35,40 @@
         $current_remaining_quantity=$purchase_quantity;
 
         $today_date = date("Y-m-d");
-        
+
         $exp_date=strtotime($expiry_date);
 
         if($expiry_date>$today_date){
                 if($pending_payment>=0){
+                        $sql2="SELECT * FROM `medicine_record` WHERE `Medicine_id`= '$med_id' AND `med_name`= '$med_name_nospace' ";
+                        $result2 = mysqli_query($con, $sql2);
+                        $countmed=mysqli_num_rows($result2);
+                        if($countmed>0){
+                            echo "<script>alert('Medicine of Same Detail (Batch Or ID) Exist Already')</script>";
+                        }
+                        else{
 
-                            
 
-                        $sql = "INSERT INTO `medicine_record` ( `med_name`, `med_type`, `date_of_purchase`, `expiry_date`, `total_purchase_amount`, `total_purchase_quantity`, `purchase_rate`, `total_payment`, `pending_payment`, `entered_by`, `seller`, `remaining_quantity`) VALUES ( '$med_name_nospace','$med_type', '$date_of_purchase', '$expiry_date', '$purchase_amount', '$purchase_quantity', '$purchase_rate', '$total_payment', '$pending_payment', '$entered_by', '$seller', '$current_remaining_quantity')";
+                        // $sql = "INSERT INTO `medicine_record` ( `med_name`, `Batch_no`, `med_type`, `date_of_purchase`, `expiry_date`, `total_purchase_amount`, `total_purchase_quantity`, `purchase_rate`, `total_payment`, `pending_payment`, `entered_by`, `seller`, `remaining_quantity`) VALUES ( '$med_name_nospace','$batch_number_nospace','$med_type', '$date_of_purchase', '$expiry_date', '$purchase_amount', '$purchase_quantity', '$purchase_rate', '$total_payment', '$pending_payment', '$entered_by', '$seller', '$current_remaining_quantity')";
+
+                        $sql = "INSERT INTO `medicine_record` ( `Medicine_id`,`med_name`, `med_type`, `date_of_purchase`, `expiry_date`, `total_purchase_amount`, `total_purchase_quantity`, `purchase_rate`, `total_payment`, `pending_payment`, `entered_by`, `seller`, `remaining_quantity`) VALUES ( '$med_id','$med_name_nospace','$med_type', '$date_of_purchase', '$expiry_date', '$purchase_amount', '$purchase_quantity', '$purchase_rate', '$total_payment', '$pending_payment', '$entered_by', '$seller', '$current_remaining_quantity')";
                         $result = mysqli_query($con, $sql);
                         if (!$result) {
-                            echo "<script>alert('Somethin Went Wrong')</script>";
-                        } 
+                            echo "<script>alert('Something Went Wrong || Check if Medicine ID Already Exist')</script>";
+                        }
                         else {
                             header('location:OP6_manageinventory.php');
                         }
-                }
+                        }
+                    }
+
                 else{
-                    echo "<script>alert('Invalid Entry!Total Payment cant be greater than totaL purchase amount')</script>";
+                    echo "<script>alert('Invalid Entry! Total Payment cannot be greater than total purchase amount')</script>";
                 }
 
             }
             else{
-                echo "<script>alert('Invvalid Entry!Expiry date should be greater')</script>";
+                echo "<script>alert('Invalid Entry!Expiry date should be greater')</script>";
             }
     }
 
@@ -89,7 +100,7 @@
         /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
         .add_main-form {
             width: 100vw;
-            height: 120vh;
+            height: 180vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -98,7 +109,7 @@
         }
 
         .add-form-container {
-            height: 750px;
+            height: 840px;
             margin-top: 10px;
             max-width: 800px;
             width: 100%;
@@ -282,8 +293,13 @@
 
                         </div>
                         <div class="input-box">
-                            <span class="details">Batch</span>
-                            <input type="text" placeholder="Enter Batch Number" name="Batch_Number" id="add_name" required>
+                            <span class="details">Medicine Id</span>
+                            <input type="number" placeholder="Enter Medicine Id" name="med_id" id="add_id" required>
+
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Batch No.</span>
+                            <input type="number" placeholder="Enter Batch Number" name="Batch_Number" id="add_name" required>
 
                         </div>
                         <div class="input-box">
@@ -297,7 +313,7 @@
                                 $result1=mysqli_query($con,$sqli);
                                 while($row=mysqli_fetch_array($result1)){
                                     echo '<option value='.$row['id'].'>'.$row['type'].'</option>';
-                                  
+
                                 }
 
 

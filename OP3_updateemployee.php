@@ -9,11 +9,12 @@
         // ============================================
         // ============= For Admin=====================
 
-        if ($designation == 'Admin') {
-            $sql = "SELECT * FROM `admin` WHERE id=$id";
+
+            $sql = "SELECT * FROM `employee` WHERE id=$id";
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $name = $row['name'];
+            $employee_id = $row['Emp_id'];
             $dob = $row['dob'];
             $email = $row['email'];
             $phone = $row['phone'];
@@ -21,73 +22,42 @@
             $temporaryaddress = $row['temporary_address'];
             $designation = $row['designation'];
 
-
-            if (isset($_POST['update'])) {
-
-
-                $fname = $_POST['fullname'];
-                $email = $_POST['email'];
-                $phone = $_POST['phone'];
-                $permanent_Address = $_POST['permanent_address'];
-                $Temporary_address = $_POST['temporary_address'];
-                $Date_of_birth = $_POST['dob'];
-
-                $gender = $_POST['gender'];
-                $designation = $_POST['designation'];
+         
 
 
-                $sql = "UPDATE `admin` SET `name` = '$fname', `dob` = '$Date_of_birth', `phone` = '$phone', `email` = '$email', `permanent_address` = '$permanent_Address',`temporary_address` = '$Temporary_address' WHERE `id` = $id";
-                $result = mysqli_query($con, $sql);
-                if ($result) {
+                if (isset($_POST['update'])) {
 
-                    header('location:OP1_manageemployee.php');
-                } else {
-                    echo "Something Went Wrong";
+                    $sql2="SELECT * FROM `employee` WHERE `Emp_id` LIKE '$employee_id'";
+                    $result2=mysqli_query($con, $sql2);
+                    $count = mysqli_num_rows($result);
+                    if ($count > 0) {
+                        echo "<script>alert('Sorry User With Same Employee Id Already Exist')</script>";
+                    } else {
+
+
+                             $fname = $_POST['fullname'];
+                            $emp_id= $_POST['Emp_id'];
+                            $email = $_POST['email'];
+                            $phone = $_POST['phone'];
+                            $permanent_Address = $_POST['permanent_address'];
+                            $Temporary_address = $_POST['temporary_address'];
+                            $Date_of_birth = $_POST['dob'];
+
+                            $gender = $_POST['gender'];
+
+
+                            $sql = "UPDATE `employee` SET `name` = '$fname',`Emp_id`='$employee_id',`dob` = '$Date_of_birth', `phone` = '$phone', `email` = '$email', `permanent_address` = '$permanent_Address',`temporary_address` = '$Temporary_address' WHERE `id` = $id";
+                            $result = mysqli_query($con, $sql);
+                            if ($result) {
+
+                                header('location:OP1_manageemployee.php');
+                            } else {
+                                echo "Something Went Wrong";
+                            }
+                     }
                 }
-            }
-        }
 
 
-        // ============================================
-        // ============= For Admin=====================
-
-        if ($designation == 'Pharmacist') {
-            $sql = "SELECT * FROM `pharmacist` WHERE id=$id";
-            $result = mysqli_query($con, $sql);
-            $row = mysqli_fetch_assoc($result);
-            $name = $row['name'];
-            $dob = $row['dob'];
-            $email = $row['email'];
-            $phone = $row['phone'];
-            $permanentaddress = $row['permanent_address'];
-            $temporaryaddress = $row['temporary_address'];
-            $designation = $row['designation'];
-
-
-            if (isset($_POST['update'])) {
-
-
-                $fname = $_POST['fullname'];
-                $email = $_POST['email'];
-                $phone = $_POST['phone'];
-                $permanent_Address = $_POST['permanent_address'];
-                $Temporary_address = $_POST['temporary_address'];
-                $Date_of_birth = $_POST['dob'];
-
-                $gender = $_POST['gender'];
-                $designation = $_POST['designation'];
-
-
-                $sql = "UPDATE `pharmacist` SET `name` = '$fname', `dob` = '$Date_of_birth', `phone` = '$phone', `email` = '$email', `permanent_address` = '$permanent_Address',`temporary_address` = '$Temporary_address' WHERE `id` = $id";
-                $result = mysqli_query($con, $sql);
-                if ($result) {
-
-                    header('location:OP1_manageemployee.php');
-                } else {
-                    echo "Something Went Wrong";
-                }
-            }
-        }
 
 
 
@@ -119,7 +89,7 @@
         /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
         .add_main-form {
             width: 100vw;
-            height: 120vh;
+            height: 130vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -128,7 +98,7 @@
         }
 
         .add-form-container {
-            height: 600px;
+            height: 650px;
             margin-top: 10px;
             max-width: 800px;
             width: 100%;
@@ -308,6 +278,11 @@
                             <span class="details">Full Name</span>
                             <input type="text" value="<?php echo $name;  ?>" name="fullname" id="add_name" onkeyup="validateName()" required minlength="8">
                             <span id="nameErr"  style="color:red"></span>
+                        </div>
+                        <div class="input-box">
+                            <span class="details">Employee ID</span>
+                            <input type="text" value="<?php echo $employee_id;  ?>" name="Emp_id" id="add_empid" required minlength="4">
+
                         </div>
                         <div class="input-box">
                             <span class="details">Email</span>

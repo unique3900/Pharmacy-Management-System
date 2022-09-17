@@ -732,6 +732,7 @@ include("./sidebar.php");
                     <thead>
                         <th>S.N</th>
                         <th>Name</th>
+                        <th>Employee ID</th>
                         <th>Date Of Birth</th>
                         <th>Gender</th>
                         <th>Age</th>
@@ -746,12 +747,13 @@ include("./sidebar.php");
                     <tbody>
 
                         <?php
-                        $sql = "SELECT * FROM `admin`";
+                        $sql = "SELECT * FROM `employee`";
                         $result = mysqli_query($con, $sql);
                         $count1 = 1;
                         while ($row = mysqli_fetch_assoc($result)) {
 
                             $id = $row['id'];
+                            $emp_id = $row['Emp_id'];
                             $name = $row['name'];
                             $gender=$row['gender'];
                             $dob = $row['dob'];
@@ -778,6 +780,7 @@ include("./sidebar.php");
                         <tr>
                             <td data-label="S.N">' . $count1 . '</td>
                             <td data-label="name">' . $name . '</td>
+                            <td data-label="name">' . $emp_id . '</td>
 
 
                             <td data-label="dob">' . $dob . '</td>
@@ -803,56 +806,7 @@ include("./sidebar.php");
                         <!-- ====================================================
                     =============================For Pharmacist Display=========-->
 
-                        <?php
-                        $sql = "SELECT * FROM `pharmacist`";
-                        $result = mysqli_query($con, $sql);
-                        $count2 = $count1;
-                        while ($row = mysqli_fetch_assoc($result)) {
-
-                            $id = $row['id'];
-                            $name = $row['name'];
-                            $dob = $row['dob'];
-                            $phone = $row['phone'];
-                            $email = $row['email'];
-                            $permanent_address = $row['permanent_address'];
-                            $temporary_address = $row['temporary_address'];
-
-                            $designation = $row['designation'];
-
-                            $age = (date('Y') - date('Y', strtotime($dob)));
-
-
-                            // =========== Important Is Here=========
-                            // =====================================
-
-
-
-
-
-                            //Print Imported Data
-                            echo '
-                        <tr>
-                            <td data-label="S.N">' . $count2 . '</td>
-                            <td data-label="name">' . $name . '</td>
-
-
-                            <td data-label="dob">' . $dob . '</td>
-
-                            <td data-label="gender">' . $gender . '</td>
-                            <td data-label="age">' . $age . '</td>
-
-                            <td data-label="Email">' . $email . '</td>
-                            <td data-label="Pnone Number">' . $phone . '</td>
-                            <td data-label="Permanent_Address">' . $permanent_address . '</td>
-                            <td data-label="Temporary_Address">' . $temporary_address . '</td>
-                            <td data-label="designation">' . $designation . '</td>
-                            
-
-
-                        </tr>';
-                            $count2++;
-                        }
-                        ?>
+                       
 
 
 

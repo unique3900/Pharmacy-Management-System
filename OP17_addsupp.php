@@ -12,23 +12,34 @@
                 $sphone = $_POST['sphone'];
                 $cphone = $_POST['cphone'];
                 $email=$_POST['email'];
-                $dop= $_POST['dop'];
+                // $dop= $_POST['dop'];
                 $paddress=$_POST['paddress'];
                 $taddress=$_POST['taddress'];
 
                 $today_date = date("Y-m-d");
                 
-
-                $sql = "INSERT INTO supp_record (supp_name, com_name, sphone, cphone, email, doe, paddress, taddress) VALUES('$supp_name','$com_name','$sphone','$cphone','$email', '$today_date','$paddress','$taddress')";
-                $result = mysqli_query($con, $sql);
-                if (!$result) {
-                die( mysqli_error($con));
-
-                    // echo "<script>alert('Something Went Wrong')</script>";
-                } else {
-                    header('location:OP13_managesupp.php');
+                $sql4="SELECT * FROM `supp_record` WHERE `email` LIKE '$email' ";
+                $result4=mysqli_query($con, $sql4);
+                $countsup=mysqli_num_rows($result4);
+                if($countsup>0){
+                    echo "<script>alert('Supplier already exists')</script>";
                 }
-            }
+                else{
+                    $sql = "INSERT INTO supp_record (supp_name, com_name, sphone, cphone, email, doe, paddress, taddress) VALUES('$supp_name','$com_name','$sphone','$cphone','$email', '$today_date','$paddress','$taddress')";
+                    $result = mysqli_query($con, $sql);
+                    if (!$result) {
+                    die( mysqli_error($con));
+    
+                        // echo "<script>alert('Something Went Wrong')</script>";
+                    } else {
+                        header('location:OP13_managesupp.php');
+                    }
+                }
+
+                }
+
+
+          
 
 
 ?>
@@ -56,17 +67,17 @@
                         /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
                         .add_main-form {
                             width: 100vw;
-                            height: 100vh;
+                            height: 150vh;
                             display: flex;
                             justify-content: center;
                             align-items: center;
                             padding: 10px;
                             background: linear-gradient(135deg, #00c354, #049c41);
-                            
+
                         }
 
                         .add-form-container {
-                            height: 670px;
+                            height: 600px;
                             margin-top: 10px;
                             max-width: 800px;
                             width: 100%;
@@ -182,8 +193,8 @@
                             margin-top: 10px;
                         }
 
-                    
-                    
+
+
 
                         /* Just reverse garideyeko - value deyera */
                         .add-form-container form #add_user_btn:hover {

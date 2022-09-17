@@ -7,64 +7,6 @@ $modalid=$_SESSION['id'];
 // SELECT MONTHNAME(date) as mname, sum(total_sale) as total FROM sale_record GROUP BY MONTH(date);
 
 
-if(isset($_POST['profilepic_change'])){
-
-$extension_image=pathinfo($_FILES['file']["name"],PATHINFO_EXTENSION);
-if(!in_array($extension_image,['png','jpeg','jpg','svg']))
-{
-    echo'
-    <div class="alert alert-danger mt-4 ml-auto w-50 alert-dismissible fade show  float-center" role="alert">
-    <strong>Invalid File Type!</strong> Only PNG,JPEG,JPG and SVG files Allowed
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-    ';
-
-}
-else{
-//checking file type if image format ko ho ki haina vanera
-
-
-
-
-// Givimg ramdom number suru ma kinaki repeat huna ne sakcha same name so overwrite nahos
-$filefname=rand(1000,10000) ."-".$_FILES["file"]["name"];
-
-// Creating temporary file for storage
-$tname=$_FILES["file"]["tmp_name"];
-
-// Add uploaded file to local storage i.e profile_uploads
-$uploadfolder='./uploads';
-move_uploaded_file($tname,$uploadfolder .'/'. $filefname);
-
-
-
-if ($_SESSION['designation'] == 'Admin'){
-
-
-$sql="UPDATE `admin` SET `profile_photo` = '$filefname' WHERE `admin`.`id` = $modalid";
-$result=mysqli_query($con,$sql);
-
-        if($result){
-            echo "<script>alert('Successfully Changed')</script>";
-        }
-
-}
-
-if ($_SESSION['designation'] == 'Pharmacist'){
-
-    $sql="UPDATE `pharmacist` SET `profile_photo` = '$filefname' WHERE `pharmacist`.`id` = $modalid";
-    $result=mysqli_query($con,$sql);
-
-
-    if($result){
-        echo "<script>alert('Successfully Changed')</script>";
-    }
-}
-}
-
-}
 
 
 ?>
@@ -719,7 +661,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                                 </a>
                             </li>
                             ';
-                           
+
 
                                         if ($_SESSION['designation'] == 'Pharmacist') {
                                             echo '
@@ -783,108 +725,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
             <div class="main-top">
                 <h1>Employee Section</h1>
 
-                                    <div class="modal" id="profilemodal">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h3 class="text-primary">Your Profile</h3>
-                                                    <button type="button" class="close " data-dismiss="modal">&times;</button>
 
-                                                </div>
-
-                                                <!-- Importing Details for modal informat -->
-                                                <?php
-                                                if ($_SESSION['designation'] == 'Admin'){
-                                                $sql_modal="SELECT * FROM `admin` WHERE `id` = $modalid";
-                                                $result_modal=mysqli_query($con,$sql_modal);
-                                                }
-                                                if ($_SESSION['designation'] == 'Pharmacist'){
-                                                    $sql_modal="SELECT * FROM `pharmacist` WHERE `id` = $modalid";
-                                                    $result_modal=mysqli_query($con,$sql_modal);
-                                                    }
-
-                                                while($row_modal=mysqli_fetch_assoc($result_modal)){
-                                                    $modal_name=$row_modal['name'];
-                                                    $modal_email=$row_modal['email'];
-                                                    $modal_phone=$row_modal['phone'];
-                                                    $modal_taddreaa=$row_modal['temporary_address'];
-                                                    $modal_paddress=$row_modal['permanent_address'];
-                                                    $modal_designation=$row_modal['designation'];
-                                                    $modal_profilepic=$row_modal['profile_photo'];
-
-
-
-                                            ?>
-
-
-                                                <div class="modal-body">
-                                                    <form action="dashboard.php" method="POST" enctype="multipart/form-data">
-
-                                                        <div class=" form-group mb-3">
-
-                                                            <img src="<?php echo 'uploads/'. $row_modal['profile_photo'] ; ?>"
-                                                                id="profile-pic" srcset="" class="rounded-circle mb-3 mx-auto d-block"
-                                                                alt="Profile_picture" width="500" height="500">
-                                                            <!-- <p><?php echo  $row_modal['profile_photo'] ; ?></p> -->
-                                                        </div>
-
-                                                        <?php
-                                                                 }
-
-                                                        ?>
-                                                        <div class="form-group">
-                                                            <label for="email">Name:</label>
-                                                            <input type="text" value="<?php echo $modal_name  ?>" name="u_email"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="email">Email:</label>
-                                                            <input type="text" value="<?php echo $modal_email  ?>" name="u_email"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="email">Phone:</label>
-                                                            <input type="text" value="<?php echo $modal_phone  ?>" name="u_phone"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="email">Permanent Address:</label>
-                                                            <input type="text" value="<?php echo $modal_paddress  ?>" name="u_paddress"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="email">Temporary Address:</label>
-                                                            <input type="text" value="<?php echo $modal_taddreaa ?>" name="u_taddredd"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="form-group border-bottom-4">
-                                                            <label for="email">Designation:</label>
-                                                            <input type="text" value="<?php echo $modal_designation  ?>"
-                                                                name="u_designation" class="form-control" readonly>
-                                                        </div>
-
-
-                                                        <div class="form-group">
-                                                            <label for="">Change Profile Photo:</label>
-
-                                                            <input type="file" name="file" id="" class="inputelem form-control"> <br>
-
-
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <button type="submit" name="profilepic_change"
-                                                                class="btn btn-info">Change</button>
-
-
-                                                        </div>
-
-
-
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
             </div>
 
             <a href="OP2_adduser.php"><button id="Add_btn">Add User</button></a>
@@ -894,6 +735,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                     <thead>
                         <th>S.N</th>
                         <th>Name</th>
+                        <th>Employee ID</th>
                         <th>Date Of Birth</th>
                         <th>Gender</th>
                         <th>Age</th>
@@ -902,19 +744,20 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                         <th>Permanent Address</th>
                         <th>Temporary Address</th>
                         <th>Designation</th>
-                      
+
                         <th>Operations</th>
                     </thead>
                     <tbody>
 
                         <?php
 
-                        $sql = "SELECT * FROM `admin`";
+                        $sql = "SELECT * FROM `employee`";
                         $result = mysqli_query($con, $sql);
                         $count1 = 1;
                         while ($row = mysqli_fetch_assoc($result)) {
 
                             $id = $row['id'];
+                            $emp_id = $row['Emp_id'];
                             $name = $row['name'];
                             $gender = $row['gender'];
 
@@ -944,6 +787,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                         <tr>
                             <td data-label="S.N">' . $count1 . '</td>
                             <td data-label="name">' . $name . '</td>
+                            <td data-label="name">' . $emp_id . '</td>
 
 
                             <td data-label="dob">' . $dob . '</td>
@@ -956,7 +800,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                             <td data-label="Permanent_Address">' . $permanent_address . '</td>
                             <td data-label="Temporary_Address">' . $temporary_address . '</td>
                             <td data-label="designation">' . $designation . '</td>
-                           
+
 
                             <td data-label="Operations"><a href="OP3_updateemployee.php?updatedesignation=' . $designation . '&updateid=' . $id . '"><button id="up_btn">Update</button></a>
                              <a href="OP4_deleteemployee.php?deleteid=' . $id . '&deletedesignation=' . $designation . '"><button id="del_btn">Delete</button></a></td>
@@ -970,63 +814,7 @@ if ($_SESSION['designation'] == 'Pharmacist'){
                         <!-- ====================================================
                     =============================For Pharmacist Display=========-->
 
-                        <?php
-                        $sql = "SELECT * FROM `pharmacist`";
-                        $result = mysqli_query($con, $sql);
-                        $count2 = $count1;
-                        while ($row = mysqli_fetch_assoc($result)) {
 
-                            $id = $row['id'];
-                            $name = $row['name'];
-                            $dob = $row['dob'];
-                            $gender = $row['gender'];
-                            $phone = $row['phone'];
-                            $email = $row['email'];
-                            $permanent_address = $row['permanent_address'];
-                            $temporary_address = $row['temporary_address'];
-
-                            $designation = $row['designation'];
-
-
-
-
-
-
-                            $age = (date('Y') - date('Y', strtotime($dob)));
-                            // =========== Important Is Here=========
-                            // =====================================
-
-
-
-
-
-                            //Print Imported Data
-                            echo '
-                        <tr>
-                            <td data-label="S.N">' . $count2 . '</td>
-                            <td data-label="name">' . $name . '</td>
-
-
-                            <td data-label="dob">' . $dob . '</td>
-
-                            <td data-label="gender">' . $gender . '</td>
-                            <td data-label="age">' . $age . '</td>
-
-                            <td data-label="Email">' . $email . '</td>
-                            <td data-label="Pnone Number">' . $phone . '</td>
-                            <td data-label="Permanent_Address">' . $permanent_address . '</td>
-                            <td data-label="Temporary_Address">' . $temporary_address . '</td>
-                            <td data-label="designation">' . $designation . '</td>
-                          
-
-                            <td data-label="Operations">
-                                <a href="OP3_updateemployee.php?updatedesignation=' . $designation . '&updateid=' . $id . '"><button id="up_btn">Update</button></a>
-                                <a href="OP4_deleteemployee.php?deletedesignation=' . $designation . '&deleteid=' . $id . '"><button id="del_btn">Delete</button></a>
-                            </td>
-                        </tr>';
-                            $count2++;
-                        }
-                        ?>
 
 
 

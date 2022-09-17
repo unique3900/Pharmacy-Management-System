@@ -28,8 +28,15 @@
                 // $sql="INSERT INTO `leaverequests` ( `Name`, `Reason`, `Date`, `end_date`) VALUES ( '$name', '$reason', '$from_date', '$end_date')";
                 // $result=mysqli_query($con,$sql);
 
+                // Fetch the employee id from employee table
+                $sql1="SELECT `Emp_id` FROM `employee` WHERE `id` = $curren_user_id";
+                $result2= mysqli_query($con, $sql1);
+                while($row1=mysqli_fetch_assoc($result2)){
+                    $employee_id=$row1['Emp_id'];
+                }
+
             
-                $sql = "INSERT INTO `leaverequests` (`leave_id`,`Name`, `Reason`,`submitted_date`, `Date`, `end_date`, `status`) VALUES ('$leave_id', '$name', '$reason','$submitted_date', '$from_date', '$end_date','2')";
+                $sql = "INSERT INTO `leaverequests` (`u_id`,`leave_id`,`Name`, `Reason`,`submitted_date`, `Date`, `end_date`, `status`) VALUES ('$employee_id','$curren_user_id', '$name', '$reason','$submitted_date', '$from_date', '$end_date','2')";
                 $result = mysqli_query($con, $sql);
                 if($result){
                     echo "<script>alert('Successfull');</script>";
@@ -642,7 +649,7 @@
 
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Purpose</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="reason"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="reason" Required></textarea>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Submitted Date</label>
@@ -655,14 +662,14 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Starting Date</label>
                 <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"
-                    name="start_date">
+                    name="start_date" Required>
             </div>
 
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Ending Date</label>
                 <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"
-                    name="end_date">
+                    name="end_date" Required>
             </div>
 
             </div>
@@ -674,6 +681,7 @@
 
         <div class="container">
             <h1 class="text-center">My Request's</h1>
+           
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -688,7 +696,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                
                     <?php
+     
                              $sql="SELECT * FROM `leaverequests` WHERE `leave_id` = $curren_user_id";
                             $result=mysqli_query($con,$sql);
                             if($result){

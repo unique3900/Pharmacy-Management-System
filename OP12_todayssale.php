@@ -5,77 +5,77 @@
                      header("location: index.php");
                      exit;
                  }
-                 $today_date = date("Y/m/d");
+                 $today_date = date("Y-m-d");
 
                  if(isset($_POST['submit']))
                  {
-                            $med_name=$_POST['med_name'];
-                            $sales_rate=$_POST['sales_rate'];
-                            $sales_quantity=$_POST['sales_quantity'];
-                            $total_sales=$_POST['total_sales'];
+                    $medicine_id=$_POST['med_id'];
+                    $sales_rate=$_POST['sales_rate'];
+                    $sales_quantity=$_POST['sales_quantity'];
+                    $total_sales=$_POST['total_sales'];
                             
-                            $entered_by=$_POST['entered_by'];
-                            $sale_date=$_POST['entry_date'];
-                            
-                            //Get Stock Record before initialing sales query
-                            $sql1="SELECT * FROM `medicine_record` WHERE `med_name` LIKE '$med_name'";
-                            $result3 = mysqli_query($con, $sql1);
-                            $count=mysqli_num_rows($result3);
+                    $entered_by=$_POST['entered_by'];
+                    $sale_date=$_POST['entry_date'];
 
-                            if($count>0)
-                            {
-                                        //Get the remaining quantity in stock
-                                        while($row=mysqli_fetch_assoc($result3))
-                                        {
+                    
+                    $sql_import_medicine_rec="SELECT * FROM `medicine_record` WHERE `Medicine_id` = $medicine_id";
+                    $result1=mysqli_query($con,$sql_import_medicine_rec);
+
+                    $count=mysqli_num_rows($result1);
+                    if($count>0){
+                        while($row=mysqli_fetch_assoc($result1)){
+                                                $expiry_date=$row['expiry_date'];
+                                                $medicine_name=$row['med_name'];
                                                 $remaining_quantity=$row['remaining_quantity'];
                                                 $purchase_rate = $row['purchase_rate'];
-                                        }
+                        }
+                        $profit_on_sales = $total_sales - ($purchase_rate * $sales_quantity);
+                        if($expiry_date<$today_date){
+                            echo "<script>alert('Invalid! Did you sell expired Product?');</script>";
+                        }
+                        else{
+                        if($sales_quantity<=$remaining_quantity){
+                            $sql_insert_sale="INSERT INTO `sale_record` (`Med_id`, `Medicine_Name`, `total_sale`, `profit_on_sale`, `entered_by`, `date`) VALUES ('$medicine_id', '$medicine_name', '$total_sales', '$profit_on_sales', '$entered_by', '$today_date')";
+                            $result2=mysqli_query($con,$sql_insert_sale);
 
-                                                $profit_on_sales = $total_sales - ($purchase_rate * $sales_quantity);
-                                                if($sales_quantity<=$remaining_quantity)
-                                                
-                                                {
-                                                    $sql2 = "INSERT INTO `sale_record` ( `Medicine_Name`, `total_sale`, `profit_on_sale`, `entered_by`, `date`) VALUES ( '$med_name', '$total_sales', '$profit_on_sales', '$entered_by', '$sale_date');";
-                                                     $result2 = mysqli_query($con, $sql2);
+                            //Update Medicine Recors
+                            if($result2){
+                                $sql_search_med_rec="SELECT * FROM `medicine_record` WHERE `Medicine_id` = $medicine_id";
+                                $result3=mysqli_query($con,$sql_search_med_rec);
+                                if($result3){
+                                    while($row_search=mysqli_fetch_assoc($result3)){
+                                       
+                                        $current_rem_quantity = $remaining_quantity - $sales_quantity;
+                                    }
 
-                                                     ///If Sales Done then reduce remaining quantity from medicine record
-                                                    if ($result2) 
-                                                    {
-                                                        $sql4 = "SELECT * FROM `medicine_record` WHERE `med_name` = '$med_name'";
-                                                        $result4 = mysqli_query($con, $sql4);
-
-                                                        if($result4)
-                                                        {
-                                                            while ($row = mysqli_fetch_assoc($result4)) 
-                                                            {
-                                                                $prev_rem_quantity = $row['remaining_quantity'];
-                                                                $current_rem_quantity = $prev_rem_quantity - $sales_quantity;
-                                                            }
-                                                            //Update SMedicine table
-                                                             $sql5 = "UPDATE `medicine_record` SET `remaining_quantity` = '$current_rem_quantity' WHERE `med_name` = '$med_name'";
-                                                             $result5 = mysqli_query($con, $sql5);
-                                                            header('location:OP6_manageinventory.php');
-                                                        }
-
-                                                    }
-
-                                                }
-                                                else
-                                                {
-                                                    echo "<script>alert('Invalid Sales entry!!!! Not enougn in stock');</script>";
-                                                }
-
-
-
-
-
+                                    $sql_update_med_rec="UPDATE `medicine_record` SET `remaining_quantity` = '$current_rem_quantity' WHERE `medicine_record`.`Medicine_id` = $medicine_id" ;
+                                    $res_update=mysqli_query($con,$sql_update_med_rec);
+                                    if($res_update){
+                                        header('location:OP6_manageinventory.php');
+                                    }
+                                }
 
                             }
                             else{
-                                echo "<script>alert('Medicine not Found');</script>";
+                                echo "<script>alert('Something Went Wrong');</script>";
+                               
                             }
 
+                        }
+                        else{
+                            echo "<script>alert('Invalid Sales entry!!!! Not enougn in stock');</script>";
+                        }
 
+                    }
+                }
+                    else{
+                        echo "<script>alert('Medicine not Found');</script>";
+                    }
+
+
+
+
+                            
 
 
 
@@ -96,13 +96,13 @@
 
 <html lang="en" dir="ltr">
 
-<head>
-    <title>Sales</title>
-    <meta charset="UTF-8">
+    <head>
+        <title>Sales</title>
+        <meta charset="UTF-8">
 
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -288,83 +288,88 @@
                 overflow: auto;
             }
         }
-    </style>
-</head>
+        </style>
+    </head>
 
-<body>
+    <body>
 
-  </div>
-    <div class="add_main-form">
-        <div class="add-form-container">
-            <div class="title">Sales Entry</div>
-            <div class="form-content">
-                <form method="POST">
-                    <div class="user-details">
+        </div>
+        <div class="add_main-form">
+            <div class="add-form-container">
+                <div class="title">Sales Entry</div>
+                <div class="form-content">
+                    <form method="POST">
+                        <div class="user-details">
 
-                        <div class="input-box">
+                            <div class="input-box">
 
 
-                            <span class="details">Medicine Name</span>
-                            <select name="med_name" id="">
+                                <span class="details">Medicine Name</span>
+                                <select name="med_id" id="">
 
-                                <?php
-                                $sqli = "SELECT `med_name` FROM medicine_record";
+                                    <?php
+                                $sqli = "SELECT * FROM  medicine_record";
                                 $result1 = mysqli_query($con, $sqli);
                                 while ($row = mysqli_fetch_assoc($result1)) {
-                                    echo '<option value=' . $row['med_name'] . '>' . $row['med_name'] . '</option>';
+                                    echo '<option value=' . $row['Medicine_id'] . '>' . $row['med_name'] . '</option>';
                                 }
 
 
                                 ?>
-                            </select>
+                                </select>
+                            </div>
+
+                            <div class="input-box">
+                                <span class="details">Sold Quantity(pcs.)</span>
+                                <input type="number" onchange="calculatesalesamount()" name="sales_quantity"
+                                    id="sales_quantity" placeholder="Enter Sales Quantity" required>
+
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Sold Rate(per pcs.)</span>
+                                <input type="number" onchange="calculatesalesamount()" id="sales_rate" name="sales_rate"
+                                    placeholder="Enter Sales Rate" required>
+
+                            </div>
+
+
+                            <div class="input-box">
+                                <span class="details">Total Sale</span>
+                                <input type="number" id="sales_amount" name="total_sales" placeholder="Sales Amount"
+                                    required readonly>
+
+                            </div>
+
+                            <div class="input-box">
+                                <span class="details">Entry By</span>
+                                <input type="text" name="entered_by" value="<?php echo $_SESSION['name']; ?>" required
+                                    readonly>
+
+                            </div>
+                            <div class="input-box">
+                                <span class="details">Entry Date</span>
+                                <input type="text" name="entry_date" value="<?php echo $today_date;  ?>" required
+                                    readonly>
+
+                            </div>
+
+
+
+
                         </div>
 
-                        <div class="input-box">
-                            <span class="details">Sold Quantity(pcs.)</span>
-                            <input type="number" value="<?php echo $u_purchase_quantity;  ?>" onchange="calculatesalesamount()" name="sales_quantity" id="sales_quantity" placeholder="Enter Sales Quantity" required>
-
+                        <div class="button">
+                            <!-- <button id="add_user_btn" name="submit" value="Add User" onclick="validateform()">Submit</button> -->
+                            <button type="submit" id="add_user_btn" name="submit" value="Add User">Done</button>
+                            <span id="submitErr"></span>
                         </div>
-                        <div class="input-box">
-                            <span class="details">Sold Rate(per pcs.)</span>
-                            <input type="number" value="<?php echo $u_purchase_rate;  ?>" onchange="calculatesalesamount()" id="sales_rate" name="sales_rate" placeholder="Enter Sales Rate" required>
-
-                        </div>
-
-
-                        <div class="input-box">
-                            <span class="details">Total Sale</span>
-                            <input type="number" value="<?php echo $purchase_amount;  ?>" id="sales_amount" name="total_sales" placeholder="Sales Amount" required readonly>
-
-                        </div>
-
-                        <div class="input-box">
-                            <span class="details">Entry By</span>
-                            <input type="text" name="entered_by" value="<?php echo $_SESSION['name']; ?>" required readonly>
-
-                        </div>
-                        <div class="input-box">
-                            <span class="details">Entry Date</span>
-                            <input type="text" name="entry_date" value="<?php echo $today_date;  ?>" required readonly>
-
-                        </div>
-
-
-
-
-                    </div>
-
-                    <div class="button">
-                        <!-- <button id="add_user_btn" name="submit" value="Add User" onclick="validateform()">Submit</button> -->
-                        <button type="submit" id="add_user_btn" name="submit" value="Add User">Update</button>
-                        <span id="submitErr"></span>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <script>
+        <script>
         function calculatesalesamount() {
             let sales_quantity = document.getElementById('sales_quantity').value;
             let sales_rate = document.getElementById('sales_rate').value;
@@ -374,9 +379,9 @@
             document.getElementById("sales_amount").value = sales_amount;
 
         }
-    </script>
+        </script>
 
 
-</body>
+    </body>
 
 </html>

@@ -18,12 +18,12 @@
     $new_password=$_POST['new_password'];
     $confirm_password=$_POST['c_password'];
 
-    if($designation=="Admin"){
+    
         if($new_password!=$confirm_password){
             echo "<script>alert('Confirm Password Doesnot Match')</script>";
         }
         else{
-                        $sql = "SELECT * FROM `admin` WHERE `id` = $id";
+                        $sql = "SELECT * FROM `employee` WHERE `id` = $id";
                         $result = mysqli_query($con, $sql);
                         
                         $count = mysqli_num_rows($result);
@@ -35,7 +35,7 @@
                                 $new_update_password=password_hash($new_password, PASSWORD_DEFAULT);
 
                                 //Update password in database
-                                $sql2="UPDATE `admin` SET `password` = '$new_update_password' WHERE `admin`.`id` = $id";
+                                $sql2="UPDATE `employee` SET `password` = '$new_update_password' WHERE `employee`.`id` = $id";
                                 $result2 = mysqli_query($con, $sql2);
                                 if($result2){
                                     echo "<script>alert('Password Changed Successfully')</script>";
@@ -52,48 +52,9 @@
                             echo "<script>alert('Somethin Went Wrong')</script>";
                         }
                 }
-    }
+    
 
-    //Pharmacist Validation
-
-    if($designation=="Pharmacist"){
-        if($new_password!=$confirm_password){
-            echo "<script>alert('Confirm Password Doesnot Match')</script>";
-        }
-        else{
-                    $sql3 = "SELECT * FROM `pharmacist` WHERE `id` = $id";
-                    $result3 = mysqli_query($con, $sql3);
-                    
-                    $count = mysqli_num_rows($result3);
-                    if ($count == 1) {
-                        while ($row = mysqli_fetch_assoc($result3)){
-
-                            //Check if users old password matches with database password
-                        if(password_verify($old_password,$row['password'])){
-                            $new_update_password=password_hash($new_password, PASSWORD_DEFAULT);
-
-                            //Update password in database
-                            $sql2="UPDATE `pharmacist` SET `password` = '$new_update_password' WHERE `pharmacist`.`id` = $id";
-                            $result2 = mysqli_query($con, $sql2);
-                            if($result2){
-                                echo "<script>alert('Password Changed Successfully')</script>";
-                                header('location:dashboard.php');
-                            }
-
-                        }
-                        else{
-                            echo "<script>alert('Old password doesnot match')</script>";
-                        }
-                        }  
-                    }
-                    else{
-                        echo "<script>alert('Somethin Went Wrong')</script>";
-                    }
-                }
-            }
-
-                
-
+   
 
     }
 

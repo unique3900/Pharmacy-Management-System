@@ -70,9 +70,9 @@ include("sidebar.php");
                                         <td>'.$prev_action.'</td>
                                         <td>
             
-                                        <a href="OP22_grant_leave_req.php?updateid=' . $row['u_id'] . '"><button type="button" class="btn btn-primary">Grant</button></a>
+                                        <a href="OP22_grant_leave_req.php?updateid=' . $row['id'] . '"><button type="button" class="btn btn-primary btn-sm">Accept</button></a>
                                            
-                                         <a href="OP23_decline_leave_req.php?deleteid=' . $row['u_id'] . '"><button type="button" class="btn btn-danger"">Decline</button></a>
+                                         <a href="OP23_decline_leave_req.php?deleteid=' . $row['id'] . '"><button type="button" class="btn btn-danger btn-sm">Decline</button></a>
                                         </td>
                                     </tr>
                                 

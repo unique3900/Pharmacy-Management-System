@@ -8,25 +8,26 @@ include "./Connection/dbcon.php";
 if (isset($_POST["login_req"])) {
     $login_email = $_POST["login_email"];
     $login_password = $_POST["login_password"];
-    $login_designation = $_POST["login_designation"];
 
 
 
-    //Step 2: Desognation Wise login garaune vayera condition check garne
-    if ($login_designation == 'Admin') {
 
 
-        $sql2 = "SELECT * FROM `admin`";
+
+
+
+        $sql2 = "SELECT * FROM `employee` WHERE `email`='$login_email'";
         $result2 = mysqli_query($con, $sql2);
          while ($row = mysqli_fetch_assoc($result2)) {
 
         $name = $row['name'];
         $db_uid=$row['id'];
         $db_email=$row['email'];
+        $db_designation=$row['designation'];
 
          }
 
-         $sql = "SELECT * FROM `admin` WHERE `email` LIKE '$login_email'";
+         $sql = "SELECT * FROM `employee` WHERE `email` LIKE '$login_email'";
          $result = mysqli_query($con, $sql);
 
 
@@ -39,7 +40,7 @@ if (isset($_POST["login_req"])) {
                     $loginstatus = true;
                     session_start();
                     $_SESSION['loggedin'] = true;
-                    $_SESSION['designation'] = $login_designation;
+                    $_SESSION['designation'] = $db_designation;
                     $_SESSION['name']=$row['name'];
                     $_SESSION['id']=$row['id'];
                     $_SESSION['email']=$row['email'];
@@ -53,55 +54,9 @@ if (isset($_POST["login_req"])) {
         } else {
             echo "<script>alert('no user Found')</script>";
         }
-    }
-
-    //Step 6:Checking if the request is for Pharmacist
-    if ($login_designation == 'Pharmacist') {
 
 
 
-
-        $sql2 = "SELECT * FROM `pharmacist`";
-        $result2 = mysqli_query($con, $sql2);
-         while ($row = mysqli_fetch_assoc($result2)) {
-
-            $name = $row['name'];
-            $db_uid=$row['id'];
-            $db_email=$row['email'];
-        
-
-         }
-
-        $sql = "SELECT * FROM `pharmacist` WHERE `email` LIKE '$login_email'";
-        $result = mysqli_query($con, $sql);
-
-        //Step 3:Database ma kati ota admin cha count garne
-        $count = mysqli_num_rows($result);
-        if ($count == 1) {
-            //Step 4: Vaidate password by decrypting it
-            while ($row = mysqli_fetch_assoc($result)) {
-                if (password_verify($login_password, $row['password'])) {
-                            $loginstatus = true;
-                            session_start();
-                            $_SESSION['loggedin'] = true;
-                            $_SESSION['designation'] = $login_designation;
-                            $_SESSION['name']=$row['name'];
-                            $_SESSION['id']=$row['id'];
-                            $_SESSION['email']=$row['email'];
-
-                            header('location:dashboard.php');
-                    
-                    
-                    
-                }
-                else{
-                    echo "<script>alert('Incorrect Password')</script>";
-                }
-            }
-        } else {
-            echo "<script>alert('no user Found')</script>";
-        }
-    }
 }
 
 
@@ -128,6 +83,7 @@ if (isset($_POST["login_req"])) {
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
     <link rel="stylesheet" href="./CSS/loginpage.css">
     <!-- <style>
         * {
@@ -279,7 +235,7 @@ if (isset($_POST["login_req"])) {
                         </div>
                     </div>
 
-                    <div class="login-form-designation">
+                    <!-- <div class="login-form-designation">
                         <span class="login-details">Designation</span>
                         <select name="login_designation" id="login-designation">
                             <optgroup label="Select Post">
@@ -287,16 +243,24 @@ if (isset($_POST["login_req"])) {
                                 <option value="Pharmacist">Pharmacist</option>
                             </optgroup>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="login-button">
                         <button id="login-btn" value="Add User" name="login_req">Login</button>
+                       
 
                     </div>
                 </form>
+                
             </div>
+            <p class="text-center text-primary font-italic">Developed by <span class="text-danger">Samyok Limbu </span>and  <span class="text-danger">Parashar Neupane </span></p>
         </div>
+        
+   
     </div>
+
+
+
 
 
 </body>

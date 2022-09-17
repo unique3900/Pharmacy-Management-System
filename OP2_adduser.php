@@ -3,6 +3,7 @@
 
         if (isset($_POST['submit'])) {
             $fname = $_POST['fullname'];
+            $employee_id=$_POST['empid'];
             $email = $_POST['email'];
             $phone = $_POST['phone'];
             $permanent_Address = $_POST['permanent_address'];
@@ -29,19 +30,20 @@
 
 
 
-            if ($designation == 'Admin') {
-                $sql = "select * from admin where email='$email'";
+
+            $sql = "SELECT * FROM `employee` WHERE `Emp_id` LIKE '$employee_id' OR `email` LIKE '$email'";
                 $result = mysqli_query($con, $sql);
                 $count = mysqli_num_rows($result);
                 if ($count > 0) {
-                    echo "<script>alert('User Already Exist')</script>";
+                    echo "<script>alert('User With Same Email Or Employee Id Already Exist')</script>";
                 } else {
                     if ($password == $confirm_password) {
 
                         $encryptpass = password_hash($password, PASSWORD_DEFAULT);
 
                         //Inserting into admin table
-                        $sql = "INSERT INTO `admin` (`name`,`gender`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`) VALUES ( '$fname','$gender','$email', '$phone', '$Date_of_birth', '$designation', '$permanent_Address', '$Temporary_address', '$encryptpass')";
+                        // $sql = "INSERT INTO `employee` (`Emp_id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`) VALUES ( '$employee_id', '$fname', '$email', '$phone', '$Date_of_birth', '$designation', '$permanent_Address', '$Temporary_address', '$encryptpass', '$gender')";
+                       $sql="INSERT INTO `employee` ( `Emp_id`, `name`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`, `gender`) VALUES ('$employee_id', '$fname', '$email', '$phone', '$Date_of_birth', '$designation', '$permanent_Address', '$Temporary_address', '$encryptpass', '$gender')";
                         $result = mysqli_query($con, $sql);
                         if (!$result) {
                             echo "<script>alert('Somethin Went Wrong')</script>";
@@ -54,7 +56,7 @@
                         echo "<script>alert('Password Doesnot Match')</script>";
                     }
                 }
-            }
+
 
 
 
@@ -62,32 +64,7 @@
             // =======For Pharmacist ===============
 
 
-            if ($designation == 'Pharmacist') {
-                $sql = "select * from pharmacist where email='$email'";
-                $result = mysqli_query($con, $sql);
-                $count = mysqli_num_rows($result);
-                if ($count > 0) {
-                    echo "<script>alert('User Already Exist')</script>";
-                } else {
-                    if ($password == $confirm_password) {
-
-                        $encryptpass = password_hash($password, PASSWORD_DEFAULT);
-
-                        //Inserting into Pharmacist table
-                        $sql = "INSERT INTO `pharmacist` (`name`,`gender`, `email`, `phone`, `dob`, `designation`, `permanent_address`, `temporary_address`, `password`) VALUES ( '$fname','$gender','$email', '$phone', '$Date_of_birth', '$designation', '$permanent_Address', '$Temporary_address', '$encryptpass')";
-                        $result = mysqli_query($con, $sql);
-                        if (!$result) {
-                            echo "<script>alert('Somethin Went Wrong')</script>";
-                        }
-                        else{
-                            header('location:OP1_manageemployee.php');
-                        }
-                    }
-                    else{
-                        echo "<script>alert('Password Doesnot Match')</script>";
-                    }
-                }
-            }
+        //
 
 
 
@@ -122,7 +99,7 @@
         /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
         .add_main-form {
             width: 100vw;
-            height: 140vh;
+            height: 180vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -131,7 +108,7 @@
         }
 
         .add-form-container {
-            height: 800px;
+            height: 900px;
             margin-top: 10px;
             max-width: 800px;
             width: 100%;
@@ -313,6 +290,11 @@
                             <span id="nameErr" style="color:red"></span>
                         </div>
                         <div class="input-box">
+                            <span class="details">Employee ID</span>
+                            <input type="number" placeholder="Enter Employee Number" name="empid" id="add_empid" required minlength="4">
+
+                        </div>
+                        <div class="input-box">
                             <span class="details">Email</span>
                             <input type="email" id="add_email" name="email" placeholder="Enter Email Address" onkeyup="validateEmail()" required>
                             <span id="emailErr" style="color:red"></span>
@@ -469,7 +451,7 @@
             passwordErr.innerHTML= "Valid";
             return true;
             }
-            
+
 
 
         }

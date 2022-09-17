@@ -30,7 +30,7 @@
                     $sphone = $_POST['sphone'];
                     $cphone = $_POST['cphone'];
                     $email=$_POST['email'];
-                    
+
                     $paddress=$_POST['paddress'];
                     $taddress=$_POST['taddress'];
 
@@ -82,7 +82,7 @@
                 }
 
                 .add-form-container {
-                    height: 670px;
+                    height: 600px;
                     /* margin-top: 10px; */
                     max-width: 800px;
                     width: 100%;
@@ -254,7 +254,7 @@
 <body>
     <div class="add_main-form">
         <div class="add-form-container">
-            <div class="title">Add Supplier</div>
+            <div class="title">Update Supplier</div>
             <div class="form-content">
                 <form action="" method="POST">
                     <div class="user-details">
@@ -290,7 +290,7 @@
                             <input type="email" id="add_email"  value="<?php echo $email; ?>" name="email" placeholder="Enter Email Address" onkeyup="validateEmail()" required>
                             <span id="emailErr" style="color:red"></span>
                         </div>
-                       
+
                         <div class="input-box">
                             <span class="details">Permanent Address</span>
                             <input type="text" name="paddress"  value="<?php echo $paddress; ?>" placeholder="Enter Full Address" onkeyup="validateAddress()" id="add_address" required>

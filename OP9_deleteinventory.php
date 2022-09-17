@@ -10,6 +10,12 @@
         if($result ){
             header('location:OP6_manageinventory.php');
         }
+        else{
+            echo "<script>alert('Cannot Delete This Since other Information Might Get Affected');</script>";
+            
+            
+
+        }
 
     }
 

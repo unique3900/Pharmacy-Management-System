@@ -44,28 +44,19 @@ if(isset($_POST['profilepic_change'])){
 
 
 
-    if ($_SESSION['designation'] == 'Admin'){
 
 
-    $sql="UPDATE `admin` SET `profile_photo` = '$filefname' WHERE `admin`.`id` = $modalid";
+
+    $sql="UPDATE `employee` SET `profile_photo` = '$filefname' WHERE `id` = $modalid";
     $result=mysqli_query($con,$sql);
 
             if($result){
                 echo "<script>alert('Successfully Changed')</script>";
             }
 
-    }
-
-    if ($_SESSION['designation'] == 'Pharmacist'){
-
-        $sql="UPDATE `pharmacist` SET `profile_photo` = '$filefname' WHERE `pharmacist`.`id` = $modalid";
-        $result=mysqli_query($con,$sql);
+  
 
 
-        if($result){
-            echo "<script>alert('Successfully Changed')</script>";
-        }
-    }
 }
 
 }
@@ -91,581 +82,581 @@ if(isset($_POST['profilepic_change'])){
         <script src="../JS/Script.js"></script>
         <link rel="stylesheet" href="CSS/jquery.dataTables.min.css">
         <style>
-        * {
-            margin: 0;
-            padding: 0;
-            outline: none;
-            box-sizing: border-box;
-            text-decoration: none;
-            font-family: 'Arizonia', cursive;
-            font-family: 'Hahmlet', serif;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        /* Primart Colors For Background And Texts */
-        :root {
-            --primary-color: rgb(255, 255, 255);
-            --primary-color-cards: rgb(250, 253, 255);
-            --secondary-color: rgb(232, 241, 234);
-            --secondary-color2: rgb(219, 255, 255);
-            --text-color1: black;
-            --text-color-2: white;
-        }
-
-        /* Primart Colors to toggle when dark theme is on */
-        .dark-theme {
-            --primary-color: rgb(66, 66, 66);
-            --primary-color-cards: rgb(199, 199, 199);
-            --secondary-color: rgb(138, 138, 138);
-            --secondary-color2: rgb(163, 163, 163);
-            --text-color1: rgb(240, 220, 220);
-            --text-color-2: black;
-        }
-
-
-
-        /* ================================= Login Form CSS  ===========================
-                        ========================================================================================= */
-
-        /* Sidebar Ko lagi CSS */
-        .containerr #sidebar {
-            align-items: center;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            height: 100vh;
-            left: 0;
-            width: 280px;
-            background-image: linear-gradient(to right top, #a4ffb5, #90ffb0, #77ffac, #56ffa9, #11ffa7);
-            border-radius: 0.5rem;
-            transition: 0.6s;
-            overflow-x: hidden;
-            z-index: 1;
-
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        #sidebar.hide {
-            width: 0;
-        }
-
-
-        nav:hover {
-            width: 280px;
-        }
-
-        nav img {
-            margin-bottom: 3px;
-            position: relative;
-            width: 40px;
-            height: 20px;
-            top: 20px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        nav .side_btn img {
-            margin-bottom: 3px;
-            position: relative;
-            width: 40px;
-            height: 20px;
-            top: 20px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        nav a {
-            position: relative;
-            width: 280px;
-            font-size: 20px;
-            color: var(--text-color-1);
-            display: table;
-            padding: 10px;
-        }
-
-        .logo {
-            text-align: center;
-            display: flex;
-            margin: 10px 0 0 10px;
-            padding-bottom: 3rem;
-        }
-
-        .logo img {
-            position: relative;
-            width: 40px;
-            height: 30px;
-            top: 20px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        .logo span {
-            color: var(--text-color1);
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-top: 10px;
-            padding-left: 15px;
-        }
-
-        .nav-item {
-            text-align: center;
-            position: relative;
-            top: 12px;
-            margin-left: 10px;
-        }
-
-        a:hover {
-            text-decoration: none;
-            background: rgba(194, 194, 194, 0.1);
-        }
-
-        .mode {
-            position: absolute;
-            bottom: 100px;
-        }
-
-        .pwd_change {
-            position: absolute;
-            bottom: 150px
-        }
-
-        .logout {
-            position: absolute;
-            bottom: 100px;
-
-        }
-
-        .containerr {
-            display: flex;
-        }
-
-        #icon_logo {
-            width: 30px;
-        }
-
-        #icon {
-            bottom: 50px;
-            cursor: pointer;
-        }
-
-        /* Sidebar menu Open Close Button */
-        #opensidemenu {
-            font-size: 2rem;
-            height: 40px;
-            width: 20px;
-
-        }
-
-        #closesidemenu {
-            position: relative;
-            margin-left: 220px;
-            width: 20px;
-            height: 30px;
-        }
-
-        #sidebar.hide~#main {
-            width: calc(100% - 10px);
-            left: 10px;
-        }
-
-        #profile-pic {
-
-            height: 160px;
-            width: 160px;
-
-
-        }
-
-
-
-
-
-
-
-        /* Main Section Where Display garincha */
-        .main {
-            position: relative;
-            padding: 20px;
-            width: calc(100% - 280px);
-            left: 280px;
-            transition: .3s ease;
-        }
-
-        .main h1 {
-            color: var(--text-color1);
-            font-size: 3rem;
-            margin: auto;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .main-top {
-            display: flex;
-            width: 100%;
-        }
-
-        .main img {
-            margin-bottom: 3px;
-            position: relative;
-            width: 40px;
-            height: 20px;
-            top: 20px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        .main-top i {
-            position: absolute;
-            right: 0;
-            margin: 10px 30px;
-            color: gray;
-            cursor: pointer;
-        }
-
-        .main .users {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .users .cards {
-            display: inline-block;
-            overflow-x: auto;
-            overflow-y: auto;
-            /* max-height:600px; */
-            /* width: 35%; */
-            flex: 1 1 200px;
-            /* Jaba DIsplay Ko size Ghatcha Taba Auto Matically cardsa ko size adjust huncha (flex-grow,shrink and width */
-            margin: 10px;
-            background-image: linear-gradient(to right top, #a4ffb5, #90ffb0, #77ffac, #56ffa9, #11ffa7);
-
-            text-align: center;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        .users .cards img {
-            width: 100px;
-            height: 80px;
-            border-radius: 25%;
-            margin-bottom: 25px;
-        }
-
-        .users .cards h4 {
-            margin-bottom: 5px;
-            color: black;
-            font-size: 30px;
-            text-transform: uppercase;
-            text-align: center;
-        }
-
-
-
-        .users table {
-            margin: auto;
-        }
-
-        .users .per span {
-            color: red;
-
-            padding: 5px;
-            font-size: 35px;
-            font-weight: bold;
-
-            /* background: rgb(255, 255, 250); */
-        }
-
-        .users .per p {
-            color: green;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .users td {
-            text-align: center;
-            font-size: 15px;
-            padding-right: 20px;
-        }
-
-        .users table a {
-            cursor: pointer;
-            text-emphasis: none;
-            text-decoration: none;
-        }
-
-        .users .cards #btn_view {
-            position: relative;
-            width: 130px;
-            height: 45px;
-            background-color: var(--primary-color);
-            color: var(--text-color1);
-            margin-top: 15px;
-            background: var(--primary-color);
-            border-radius: 10px;
-        }
-
-        .users .cards a:hover {
-            cursor: pointer;
-            background: var(--primary-color-cards);
-            color: var(--text-color-1);
-            transition: 0.2s;
-        }
-
-
-
-
-
-        /* Css for Crud Table */
-
-        #Add_btn {
-            width: 100px;
-            background-color: darkblue;
-            color: white;
-            outline: none;
-            height: 40px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-            margin-right: 2px;
-
-        }
-
-        .t_table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .t_table td,
-        .t_table th {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .t_table th {
-            background-color: darkblue;
-            color: #ffffff;
-        }
-
-        .t_table tr {
-            color: var(--text-color1);
-        }
-
-        .t_table tbody tr:nth-child(even) {
-            background-color: var(--secondary-color2);
-        }
-
-        #up_btn {
-            width: 90px;
-            background-color: darkblue;
-            color: white;
-            outline: none;
-            height: 30px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-            margin-right: 2px;
-
-        }
-
-        #del_btn {
-            width: 90px;
-            background-color: darkred;
-            color: white;
-            outline: none;
-            height: 30px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-
-
-        }
-
-        */
-        /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
-
-
-        #Add_btn {
-            width: 100px;
-            background-color: darkblue;
-            color: white;
-            outline: none;
-            height: 40px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-            margin-right: 2px;
-
-        }
-
-        .t_table {
-            width: calc(100% - 280px);
-            left: 280px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .t_table td,
-        .t_table th {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .t_table th {
-            background-color: darkblue;
-            color: #ffffff;
-        }
-
-        .t_table tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
-        }
-
-        #up_btn {
-            width: 90px;
-            background-color: darkblue;
-            color: white;
-            outline: none;
-            height: 30px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-            margin-right: 2px;
-
-        }
-
-        #del_btn {
-            width: 90px;
-            background-color: darkred;
-            color: white;
-            outline: none;
-            height: 30px;
-            border-radius: 5px;
-            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-
-
-        }
-
-
-
-
-
-
-
-
-
-        /*responsive*/
-
-
-        @media(max-width: 500px) {
-            .t_table thead {
-                display: none;
-            }
-
-            .t_table,
-            .t_table tbody,
-            .t_table tr,
-            .t_table td {
-                display: block;
-                width: 100%;
-                overflow: auto;
-            }
-
-            .t_table tr {
-                margin-bottom: 15px;
-            }
-
-
-            .t_table td {
-                text-align: right;
-                padding-left: 50%;
-                text-align: right;
-                position: relative;
-            }
-
-            .t_table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 15px;
-                font-size: 15px;
-                font-weight: bold;
-                text-align: left;
-            }
-        }
-
-        .main-button {
-            text-align: center;
-        }
-
-        .monthly-table {
-
-            padding: 10px;
-            width: 100%;
-            border-collapse: collapse;
-
-        }
-
-        .monthly-table td,
-        .monthly-table th {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            text-align: center;
-            font-size: 23px;
-        }
-
-        .monthly-table th {
-            background-color: darkblue;
-            color: white;
-        }
-
-        .monthly-table tr {
-            color: var(--text-color1);
-        }
-
-        .monthly-table tbody tr:nth-child(even) {
-            background-color: var(--secondary-color2);
-        }
-
-        @media(max-width: 500px) {
-            .monthly-table thead {
-                display: none;
-            }
-
-            .monthly-table,
-            .monthly-table tbody,
-            .monthly-table tr,
-            .monthly-table td {
-                display: block;
-                width: 100%;
-                overflow: auto;
-            }
-
-            .monthly-table tr {
-                margin-bottom: 15px;
-            }
-
-            .monthly-table td {
-                text-align: right;
-                padding-left: 50%;
-                text-align: right;
-                position: relative;
-            }
-
-            .monthly-table::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 0;
-                width: 50%;
-                padding-left: 15px;
-                font-size: 15px;
-                font-weight: bold;
-                text-align: left;
-            }
-        }
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        outline: none;
+                        box-sizing: border-box;
+                        text-decoration: none;
+                        font-family: 'Arizonia', cursive;
+                        font-family: 'Hahmlet', serif;
+                        font-family: 'Roboto', sans-serif;
+                    }
+
+                    /* Primart Colors For Background And Texts */
+                    :root {
+                        --primary-color: rgb(255, 255, 255);
+                        --primary-color-cards: rgb(250, 253, 255);
+                        --secondary-color: rgb(232, 241, 234);
+                        --secondary-color2: rgb(219, 255, 255);
+                        --text-color1: black;
+                        --text-color-2: white;
+                    }
+
+                    /* Primart Colors to toggle when dark theme is on */
+                    .dark-theme {
+                        --primary-color: rgb(66, 66, 66);
+                        --primary-color-cards: rgb(199, 199, 199);
+                        --secondary-color: rgb(138, 138, 138);
+                        --secondary-color2: rgb(163, 163, 163);
+                        --text-color1: rgb(240, 220, 220);
+                        --text-color-2: black;
+                    }
+
+
+
+                    /* ================================= Login Form CSS  ===========================
+                                    ========================================================================================= */
+
+                    /* Sidebar Ko lagi CSS */
+                    .containerr #sidebar {
+                        align-items: center;
+                        position: fixed;
+                        top: 0;
+                        bottom: 0;
+                        height: 100vh;
+                        left: 0;
+                        width: 280px;
+                        background-image: linear-gradient(to right top, #a4ffb5, #90ffb0, #77ffac, #56ffa9, #11ffa7);
+                        border-radius: 0.5rem;
+                        transition: 0.6s;
+                        overflow-x: hidden;
+                        z-index: 1;
+
+                        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+                    }
+
+                    #sidebar.hide {
+                        width: 0;
+                    }
+
+
+                    nav:hover {
+                        width: 280px;
+                    }
+
+                    nav img {
+                        margin-bottom: 3px;
+                        position: relative;
+                        width: 40px;
+                        height: 20px;
+                        top: 20px;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+
+                    nav .side_btn img {
+                        margin-bottom: 3px;
+                        position: relative;
+                        width: 40px;
+                        height: 20px;
+                        top: 20px;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+
+                    nav a {
+                        position: relative;
+                        width: 280px;
+                        font-size: 20px;
+                        color: var(--text-color-1);
+                        display: table;
+                        padding: 10px;
+                    }
+
+                    .logo {
+                        text-align: center;
+                        display: flex;
+                        margin: 10px 0 0 10px;
+                        padding-bottom: 3rem;
+                    }
+
+                    .logo img {
+                        position: relative;
+                        width: 40px;
+                        height: 30px;
+                        top: 20px;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+
+                    .logo span {
+                        color: var(--text-color1);
+                        text-transform: uppercase;
+                        font-weight: bold;
+                        margin-top: 10px;
+                        padding-left: 15px;
+                    }
+
+                    .nav-item {
+                        text-align: center;
+                        position: relative;
+                        top: 12px;
+                        margin-left: 10px;
+                    }
+
+                    a:hover {
+                        text-decoration: none;
+                        background: rgba(194, 194, 194, 0.1);
+                    }
+
+                    .mode {
+                        position: absolute;
+                        bottom: 100px;
+                    }
+
+                    .pwd_change {
+                        position: absolute;
+                        bottom: 150px
+                    }
+
+                    .logout {
+                        position: absolute;
+                        bottom: 100px;
+
+                    }
+
+                    .containerr {
+                        display: flex;
+                    }
+
+                    #icon_logo {
+                        width: 30px;
+                    }
+
+                    #icon {
+                        bottom: 50px;
+                        cursor: pointer;
+                    }
+
+                    /* Sidebar menu Open Close Button */
+                    #opensidemenu {
+                        font-size: 2rem;
+                        height: 40px;
+                        width: 20px;
+
+                    }
+
+                    #closesidemenu {
+                        position: relative;
+                        margin-left: 220px;
+                        width: 20px;
+                        height: 30px;
+                    }
+
+                    #sidebar.hide~#main {
+                        width: calc(100% - 10px);
+                        left: 10px;
+                    }
+
+                    #profile-pic {
+
+                        height: 160px;
+                        width: 160px;
+
+
+                    }
+
+
+
+
+
+
+
+                    /* Main Section Where Display garincha */
+                    .main {
+                        position: relative;
+                        padding: 20px;
+                        width: calc(100% - 280px);
+                        left: 280px;
+                        transition: .3s ease;
+                    }
+
+                    .main h1 {
+                        color: var(--text-color1);
+                        font-size: 3rem;
+                        margin: auto;
+                        text-align: center;
+                        margin-bottom: 10px;
+                    }
+
+                    .main-top {
+                        display: flex;
+                        width: 100%;
+                    }
+
+                    .main img {
+                        margin-bottom: 3px;
+                        position: relative;
+                        width: 40px;
+                        height: 20px;
+                        top: 20px;
+                        font-size: 20px;
+                        text-align: center;
+                    }
+
+                    .main-top i {
+                        position: absolute;
+                        right: 0;
+                        margin: 10px 30px;
+                        color: gray;
+                        cursor: pointer;
+                    }
+
+                    .main .users {
+                        display: flex;
+                        justify-content: space-around;
+                        flex-wrap: wrap;
+                        width: 100%;
+                    }
+
+                    .users .cards {
+                        display: inline-block;
+                        overflow-x: auto;
+                        overflow-y: auto;
+                        max-height:617px;
+                        /* width: 35%; */
+                        flex: 1 1 200px;
+                        /* Jaba DIsplay Ko size Ghatcha Taba Auto Matically cardsa ko size adjust huncha (flex-grow,shrink and width */
+                        margin: 10px;
+                        background-image: linear-gradient(to right top, #a4ffb5, #90ffb0, #77ffac, #56ffa9, #11ffa7);
+                        height:617px;
+                        text-align: center;
+                        border-radius: 10px;
+                        padding: 10px;
+                        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .users .cards img {
+                        width: 100px;
+                        height: 80px;
+                        border-radius: 25%;
+                        margin-bottom: 25px;
+                    }
+
+                    .users .cards h4 {
+                        margin-bottom: 5px;
+                        color: black;
+                        font-size: 30px;
+                        text-transform: uppercase;
+                        text-align: center;
+                    }
+
+
+
+                    .users table {
+                        margin: auto;
+                    }
+
+                    .users .per span {
+                        color: red;
+
+                        padding: 5px;
+                        font-size: 35px;
+                        font-weight: bold;
+
+                        /* background: rgb(255, 255, 250); */
+                    }
+
+                    .users .per p {
+                        color: green;
+                        font-size: 20px;
+                        font-weight: bold;
+                        margin-bottom: 15px;
+                    }
+
+                    .users td {
+                        text-align: center;
+                        font-size: 15px;
+                        padding-right: 20px;
+                    }
+
+                    .users table a {
+                        cursor: pointer;
+                        text-emphasis: none;
+                        text-decoration: none;
+                    }
+
+                    .users .cards #btn_view {
+                        position: relative;
+                        width: 130px;
+                        height: 45px;
+                        background-color: var(--primary-color);
+                        color: var(--text-color1);
+                        margin-top: 15px;
+                        background: var(--primary-color);
+                        border-radius: 10px;
+                    }
+
+                    .users .cards a:hover {
+                        cursor: pointer;
+                        background: var(--primary-color-cards);
+                        color: var(--text-color-1);
+                        transition: 0.2s;
+                    }
+
+
+
+
+
+                    /* Css for Crud Table */
+
+                    #Add_btn {
+                        width: 100px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 40px;
+                        margin-bottom: 15px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
+
+                    .t_table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+
+                    .t_table td,
+                    .t_table th {
+                        padding: 12px 15px;
+                        border: 1px solid #ddd;
+                        text-align: center;
+                        font-size: 16px;
+                    }
+
+                    .t_table th {
+                        background-color: darkblue;
+                        color: #ffffff;
+                    }
+
+                    .t_table tr {
+                        color: var(--text-color1);
+                    }
+
+                    .t_table tbody tr:nth-child(even) {
+                        background-color: var(--secondary-color2);
+                    }
+
+                    #up_btn {
+                        width: 90px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
+
+                    #del_btn {
+                        width: 90px;
+                        background-color: darkred;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+
+
+                    }
+
+                    */
+                    /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
+
+
+                    #Add_btn {
+                        width: 100px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 40px;
+                        margin-bottom: 5px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
+
+                    .t_table {
+                        width: calc(100% - 280px);
+                        left: 280px;
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+
+                    .t_table td,
+                    .t_table th {
+                        padding: 12px 15px;
+                        border: 1px solid #ddd;
+                        text-align: center;
+                        font-size: 16px;
+                    }
+
+                    .t_table th {
+                        background-color: darkblue;
+                        color: #ffffff;
+                    }
+
+                    .t_table tbody tr:nth-child(even) {
+                        background-color: #f5f5f5;
+                    }
+
+                    #up_btn {
+                        width: 90px;
+                        background-color: darkblue;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+                        margin-right: 2px;
+
+                    }
+
+                    #del_btn {
+                        width: 90px;
+                        background-color: darkred;
+                        color: white;
+                        outline: none;
+                        height: 30px;
+                        border-radius: 5px;
+                        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+
+
+                    }
+
+
+
+
+
+
+
+
+
+                    /*responsive*/
+
+
+                    @media(max-width: 500px) {
+                        .t_table thead {
+                            display: none;
+                        }
+
+                        .t_table,
+                        .t_table tbody,
+                        .t_table tr,
+                        .t_table td {
+                            display: block;
+                            width: 100%;
+                            overflow: auto;
+                        }
+
+                        .t_table tr {
+                            margin-bottom: 15px;
+                        }
+
+
+                        .t_table td {
+                            text-align: right;
+                            padding-left: 50%;
+                            text-align: right;
+                            position: relative;
+                        }
+
+                        .t_table td::before {
+                            content: attr(data-label);
+                            position: absolute;
+                            left: 0;
+                            width: 50%;
+                            padding-left: 15px;
+                            font-size: 15px;
+                            font-weight: bold;
+                            text-align: left;
+                        }
+                    }
+
+                    .main-button {
+                        text-align: center;
+                    }
+
+                    .monthly-table {
+
+                        padding: 10px;
+                        width: 100%;
+                        border-collapse: collapse;
+
+                    }
+
+                    .monthly-table td,
+                    .monthly-table th {
+                        padding: 12px 15px;
+                        border: 1px solid #ddd;
+                        text-align: center;
+                        font-size: 23px;
+                    }
+
+                    .monthly-table th {
+                        background-color: darkblue;
+                        color: white;
+                    }
+
+                    .monthly-table tr {
+                        color: var(--text-color1);
+                    }
+
+                    .monthly-table tbody tr:nth-child(even) {
+                        background-color: var(--secondary-color2);
+                    }
+
+                    @media(max-width: 500px) {
+                        .monthly-table thead {
+                            display: none;
+                        }
+
+                        .monthly-table,
+                        .monthly-table tbody,
+                        .monthly-table tr,
+                        .monthly-table td {
+                            display: block;
+                            width: 100%;
+                            overflow: auto;
+                        }
+
+                        .monthly-table tr {
+                            margin-bottom: 15px;
+                        }
+
+                        .monthly-table td {
+                            text-align: right;
+                            padding-left: 50%;
+                            text-align: right;
+                            position: relative;
+                        }
+
+                        .monthly-table::before {
+                            content: attr(data-label);
+                            position: absolute;
+                            left: 0;
+                            width: 50%;
+                            padding-left: 15px;
+                            font-size: 15px;
+                            font-weight: bold;
+                            text-align: left;
+                        }
+                    }
         </style>
         <title>Dashboard</title>
     </head>
@@ -902,17 +893,15 @@ if(isset($_POST['profilepic_change'])){
 
                                 <!-- Importing Details for modal informat -->
                                 <?php
-                                if ($_SESSION['designation'] == 'Admin'){
-                                $sql_modal="SELECT * FROM `admin` WHERE `id` = $modalid";
+                               
+                                $sql_modal="SELECT * FROM `employee` WHERE `id` = $modalid";
                                 $result_modal=mysqli_query($con,$sql_modal);
-                                }
-                                if ($_SESSION['designation'] == 'Pharmacist'){
-                                    $sql_modal="SELECT * FROM `pharmacist` WHERE `id` = $modalid";
-                                    $result_modal=mysqli_query($con,$sql_modal);
-                                    }
+                                
+                             
 
                                 while($row_modal=mysqli_fetch_assoc($result_modal)){
                                     $modal_name=$row_modal['name'];
+                                    $modal_empid=$row_modal['Emp_id'];
                                     $modal_email=$row_modal['email'];
                                     $modal_phone=$row_modal['phone'];
                                     $modal_taddreaa=$row_modal['temporary_address'];
@@ -943,6 +932,11 @@ if(isset($_POST['profilepic_change'])){
                                         <div class="form-group">
                                             <label for="email">Name:</label>
                                             <input type="text" value="<?php echo $modal_name  ?>" name="u_email"
+                                                class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Employee Id:</label>
+                                            <input type="text" value="<?php echo $modal_empid ?>" name="u_email"
                                                 class="form-control" readonly>
                                         </div>
                                         <div class="form-group">
@@ -1059,14 +1053,15 @@ if(isset($_POST['profilepic_change'])){
                                 <tr>
                                     <td><span>
                                             <p>Total Employees</p><?php
-                                   $sql = "SELECT id FROM `admin` ORDER BY id";
-                                   $result1 = mysqli_query($con,$sql);
+                                    $sql1= "SELECT * FROM `employee` WHERE `designation` LIKE 'Admin' ORDER BY id";
+                                   $result1 = mysqli_query($con,$sql1);
                                    $row1 = mysqli_num_rows($result1);
 
-                                   $sql1 = "SELECT id FROM `pharmacist` ORDER BY id";
+                                   $sql1 = "SELECT id FROM `employee` WHERE `designation` LIKE 'Pharmacist' ORDER BY id";
                                    $result2 = mysqli_query($con,$sql1);
                                    $row2 = mysqli_num_rows($result2);
-                                     echo $row1+$row2 ." People" ;  ?>
+                                   $count=$row1 + $row2;
+                                     echo $count ." People" ;  ?>
                                         </span></td>
 
 
@@ -1075,7 +1070,7 @@ if(isset($_POST['profilepic_change'])){
                                 <tr>
                                     <td><span>
                                             <p>Total Admin</p><?php
-                                 $sql = "SELECT id FROM `admin` ORDER BY id";
+                                 $sql = "SELECT * FROM `employee` WHERE `designation` LIKE 'Admin' ORDER BY id";
                                  $result1 = mysqli_query($con,$sql);
                                  $row1 = mysqli_num_rows($result1);
                                  echo $row1 ." People" ; ?>
@@ -1085,7 +1080,7 @@ if(isset($_POST['profilepic_change'])){
                                 <tr>
                                     <td><span>
                                             <p>Total Pharmacist</p><?php
-                                            $sql = "SELECT id FROM `pharmacist` ORDER BY id";
+                                            $sql ="SELECT * FROM `employee` WHERE `designation` LIKE 'Pharmacist' ORDER BY id";
                                             $result1 = mysqli_query($con,$sql);
                                             $row = mysqli_num_rows($result1);
                                             echo $row ." People"; ?>

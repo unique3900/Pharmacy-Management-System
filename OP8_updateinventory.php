@@ -18,6 +18,7 @@
             $result = mysqli_query($con, $sql);
             $row = mysqli_fetch_assoc($result);
             $u_med_name = $row['med_name'];
+            $u_med_id = $row['Medicine_id'];
             $u_med_type = $row['med_type'];
             $u_purchase_quantity = $row['total_purchase_quantity'];
             $u_purchase_rate = $row['purchase_rate'];
@@ -37,6 +38,7 @@
 
 
                 $med_name = $_POST['med_name'];
+                $med_id = $_POST['med_id'];
                 $med_type = $_POST['med_type'];
 
                 $purchase_quantity = $_POST['purchase_quantity'];
@@ -61,7 +63,7 @@
 
                 if($pending_payment>=0){
 
-                    $sql = "UPDATE `medicine_record` SET `med_name` = '$med_name', `med_type` = '$med_type', `total_purchase_quantity` = '$purchase_quantity', `purchase_rate` = '$purchase_rate', `total_payment` = '$total_payment', `pending_payment` = '$pending_payment',`remaining_quantity` = '$new_quantity', `entered_by` = '$entered_by', `seller` = '$seller' WHERE `medicine_record`.`id` = $id";
+                    $sql = "UPDATE `medicine_record` SET  `med_type` = '$med_type', `total_purchase_quantity` = '$purchase_quantity', `purchase_rate` = '$purchase_rate', `total_payment` = '$total_payment', `pending_payment` = '$pending_payment',`remaining_quantity` = '$new_quantity', `entered_by` = '$entered_by', `seller` = '$seller' WHERE `medicine_record`.`id` = $id";
                     $result = mysqli_query($con, $sql);
                     if (!$result) {
                         echo "<script>alert('Somethin Went Wrong')</script>";
@@ -102,7 +104,7 @@
         /* Main.form vaneko hamile document ko body ko rup ma maneko so height ra width full rakheko */
         .add_main-form {
             width: 100vw;
-            height: 100vh;
+            height: 180vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,7 +113,7 @@
         }
 
         .add-form-container {
-            height: 800px;
+            height: 700px;
             margin-top: 10px;
             max-width: 800px;
             width: 100%;
@@ -289,10 +291,17 @@
                     <div class="user-details">
                         <div class="input-box">
                             <span class="details">Medicine Name</span>
-                            <input type="text" value="<?php echo $u_med_name;  ?>" placeholder="Enter Medicine Name" name="med_name" id="add_name" required>
+                            <input type="text" value="<?php echo $u_med_name;  ?>" placeholder="Enter Medicine Name" name="med_name" id="add_name" readonly>
 
                         </div>
                         <div class="input-box">
+                            <span class="details">Medicine ID</span>
+                            <input type="text" value="<?php echo $u_med_id;  ?>" placeholder="Enter Medicine ID" name="med_id" id="add_name" readonly>
+
+                        </div>
+
+                        <div class="input-box">
+
 
 
                             <span class="details">Medicine Type</span>
